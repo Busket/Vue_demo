@@ -1,12 +1,12 @@
 <template>
-  <div class="Login">
-    <h1>This is an login page</h1>
+  <div class="ForgetPassword">
+    <h3>这是忘记密码界面</h3>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Login"
+  name: "ForgetPassword"
 };
 </script>
 
