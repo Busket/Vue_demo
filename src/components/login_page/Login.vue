@@ -8,12 +8,8 @@
       class="login-box"
     >
       <h3 class="login-title">欢迎登录</h3>
-      <el-form-item label="账号" prop="username">
-        <el-input
-          type="text"
-          placeholder="请输入账号"
-          v-model="form.username"
-        />
+      <el-form-item label="邮箱" prop="email">
+        <el-input type="text" placeholder="请输入邮箱" v-model="form.email" />
       </el-form-item>
       <el-form-item label="密码" prop="password">
         <el-input
@@ -26,11 +22,15 @@
         <el-button type="primary" v-on:click="onSubmit('loginForm')"
           >登录</el-button
         >
-        <el-button type="primary" v-on:click="pathTo('Register')">注册</el-button
+        <el-button type="primary" v-on:click="pathTo('Register')"
+          >注册</el-button
         >
         <el-button type="primary" v-on:click="pathTo('ForgetPassword')"
           >忘记密码</el-button
         >
+        <span v-show="this.errorInfo.isShowError" class="error">
+          {{ this.errorInfo.text }}
+        </span>
       </el-form-item>
     </el-form>
 
@@ -51,20 +51,23 @@
 </template>
 
 <script>
+import apis from "@/apis/apis";
+
 export default {
   name: "Login",
   data() {
     return {
       form: {
-        username: "",
+        email: "",
         password: ""
       },
-
+      errorInfo: {
+        text: "登陆失败,请重试",
+        isShowError: false //显示错误提示
+      },
       // 表单验证，需要在 el-form-item 元素中增加 prop 属性
       rules: {
-        username: [
-          { required: true, message: "账号不可为空", trigger: "blur" }
-        ],
+        email: [{ required: true, message: "账号不可为空", trigger: "blur" }],
         password: [{ required: true, message: "密码不可为空", trigger: "blur" }]
       },
 
@@ -78,7 +81,51 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           // 使用 vue-router 路由到指定页面，该方式称之为编程式导航
-          this.$router.push("/");
+          //在这里提交表单信息
+          //调用后端登陆接口
+          apis.shiroApi
+            .loginIn(this.form)
+            .then(data => {
+              console.log("success:", data);
+              if (data && data.data) {
+                var json = data.data;
+                if (json.status === "SUCCESS") {
+                  // this.$common.setSessionStorage(
+                  //   "token",
+                  //   json.data.userInfo.token
+                  // );
+                  // this.$common.setSessionStorage(
+                  //   "username",
+                  //   json.data.userInfo.userName
+                  // );
+                  // this.$common.setSessionStorage(
+                  //   "lev",
+                  //   json.data.sysRoleVoList
+                  // );
+                  // //存入菜单,渲染菜单
+                  // this.$store.dispatch("add_Menus", json.data.sysMenuVoList);
+                  //
+                  // //动态设置路由
+                  // this.$store.dispatch("add_Routes", json.data.sysMenuVoList);
+                  //
+                  // //存储按钮权限
+                  // this.$store.dispatch(
+                  //   "add_Permissions",
+                  //   json.data.rolePermissionVoList
+                  // );
+                  this.$router.push("/");
+                  return;
+                } else if (json.message) {
+                  this.errorInfo.text = json.message;
+                }
+              }
+              this.errorInfo.isShowError = true;
+            })
+            .catch(err => {
+              console.log("error:", err);
+              this.errorInfo.isShowError = true;
+              this.errorInfo.text = "系统接口异常";
+            });
         } else {
           this.dialogVisible = true;
           return false;

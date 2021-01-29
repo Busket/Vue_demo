@@ -32,10 +32,10 @@ export default {
     toForgetPassword: function() {
       this.componentName = "ForgetPassword";
     },
-    change(data){
-      if(data==="Register") this.componentName = "Register";
-      else if(data==="Login") this.componentName = "Login";
-      else if(data==="ForgetPassword") this.componentName = "ForgetPassword";
+    change(data) {
+      if (data === "Register") this.componentName = "Register";
+      else if (data === "Login") this.componentName = "Login";
+      else if (data === "ForgetPassword") this.componentName = "ForgetPassword";
     }
   }
 };

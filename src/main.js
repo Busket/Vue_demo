@@ -7,6 +7,7 @@ import "element-ui/lib/theme-chalk/index.css";
 
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
+window.moment = require("moment");
 
 new Vue({
   router,
