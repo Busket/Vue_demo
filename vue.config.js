@@ -12,7 +12,10 @@ module.exports = {
       }
     };
   },
-
+  devServer: {
+    // 项目运行时候的端口号
+    port: 4000
+  },
   css: {
     // 是否使用 css 分离插件
     extract: true,

@@ -91,7 +91,7 @@ export default {
                 var json = data.data;
                 if (json.status === "SUCCESS") {
                   // this.$common.setSessionStorage(
-                  //   "token",
+                  //   "remember_token",
                   //   json.data.userInfo.token
                   // );
                   // this.$common.setSessionStorage(
