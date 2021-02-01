@@ -20,7 +20,7 @@ export default {
     // };
     //return Axios.post("/api/shiro-api/login", param);
     //return Axios.post("http://47.103.26.140:3000/mock/42/login", param);
-    return Axios.post("http://localhost:8080/login", param);
+    return Axios.post("/api/login", param);
   },
   /**
    * 退出登陆

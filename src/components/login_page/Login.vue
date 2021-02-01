@@ -75,6 +75,7 @@ export default {
       dialogVisible: false
     };
   },
+
   methods: {
     onSubmit(formName) {
       // 为表单绑定验证功能
@@ -89,7 +90,8 @@ export default {
               console.log("success:", data);
               if (data && data.data) {
                 var json = data.data;
-                if (json.status === "SUCCESS") {
+                // console.log(json);
+                if (data.statusText === "OK") {
                   // this.$common.setSessionStorage(
                   //   "remember_token",
                   //   json.data.userInfo.token

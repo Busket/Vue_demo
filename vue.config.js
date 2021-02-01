@@ -14,7 +14,17 @@ module.exports = {
   },
   devServer: {
     // 项目运行时候的端口号
-    port: 4000
+    port: 4000,
+    proxy: {
+      "/api": {
+        target: "http://localhost:8080",
+        changeOrigin: true,
+        ws: true,
+        pathRewrite: {
+          "/api": ""
+        }
+      }
+    }
   },
   css: {
     // 是否使用 css 分离插件

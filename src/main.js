@@ -4,10 +4,13 @@ import router from "./router";
 import store from "./store";
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
+// import axios from "axios";
+// import VueAxios from "vue-axios";
 
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
-window.moment = require("moment");
+// window.moment = require("moment");
+// Vue.user(VueAxios, axios);
 
 new Vue({
   router,
