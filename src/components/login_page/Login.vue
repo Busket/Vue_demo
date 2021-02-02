@@ -90,8 +90,10 @@ export default {
               console.log("success:", data);
               if (data && data.data) {
                 var json = data.data;
-                // console.log(json);
-                if (data.statusText === "OK") {
+                console.log(json);
+                console.log(json.status); //问题出在这里，json.status无法访问到需要的数据
+                if (json.status === "SUCCESS") {
+                // if (data.statusText === "OK") {
                   // this.$common.setSessionStorage(
                   //   "remember_token",
                   //   json.data.userInfo.token
