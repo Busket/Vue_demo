@@ -25,9 +25,16 @@
         <el-button type="primary" v-on:click="pathTo('Register')"
           >注册</el-button
         >
+      </el-form-item>
+      <el-form-item>
         <el-button type="primary" v-on:click="pathTo('ForgetPassword')"
           >忘记密码</el-button
         >
+        <el-button type="primary" v-on:click="pathTo('emailConfirm')"
+          >邮箱激活</el-button
+        >
+      </el-form-item>
+      <el-form-item>
         <span v-show="this.errorInfo.isShowError" class="error">
           {{ this.errorInfo.text }}
         </span>
@@ -91,21 +98,44 @@ export default {
               if (data && data.data) {
                 var json = data.data;
                 console.log(json);
-                console.log(json.status); //问题出在这里，json.status无法访问到需要的数据
+                console.log(json.userInfo.userEmail); //问题出在这里，json.status无法访问到需要的数据
                 if (json.status === "SUCCESS") {
-                // if (data.statusText === "OK") {
+                  sessionStorage.setItem(
+                    "userInfo",
+                    JSON.stringify(json.userInfo)
+                  );
+                  console.log(sessionStorage.getItem("userInfo"));
+
+                  // 取值时：把获取到的Json字符串转换回对象
+                  var userJsonStr = sessionStorage.getItem("userInfo");
+                  var userInfo = JSON.parse(userJsonStr);
+                  console.log(userInfo.userName); // => tom
+
                   // this.$common.setSessionStorage(
-                  //   "remember_token",
-                  //   json.data.userInfo.token
+                  //   "userToken",
+                  //   json.userInfo.userToken
                   // );
                   // this.$common.setSessionStorage(
-                  //   "username",
-                  //   json.data.userInfo.userName
+                  //   "userEmail",
+                  //   json.userInfo.userEmail
                   // );
                   // this.$common.setSessionStorage(
-                  //   "lev",
-                  //   json.data.sysRoleVoList
+                  //   "userName",
+                  //   json.userInfo.userName
                   // );
+                  // this.$common.setSessionStorage(
+                  //   "userId",
+                  //   json.userInfo.userId
+                  // );
+                  // this.$common.setSessionStorage(
+                  //   "userPhone",
+                  //   json.userInfo.userPhone
+                  // );
+                  // this.$common.setSessionStorage(
+                  //   "userJurisdiction",
+                  //   json.userInfo.userJurisdiction
+                  // );
+                  // console.log(this.$common.getSessionStorage("userName"));
                   // //存入菜单,渲染菜单
                   // this.$store.dispatch("add_Menus", json.data.sysMenuVoList);
                   //
@@ -117,7 +147,9 @@ export default {
                   //   "add_Permissions",
                   //   json.data.rolePermissionVoList
                   // );
-                  this.$router.push("/");
+
+                  // this.$router.push("/loginPage");
+                  this.pathTo("Login"); //跳转到登录页面
                   return;
                 } else if (json.message) {
                   this.errorInfo.text = json.message;

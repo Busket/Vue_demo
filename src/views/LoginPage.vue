@@ -11,6 +11,7 @@
 import Login from "@c/login_page/Login.vue";
 import Register from "@c/login_page/Register";
 import ForgetPassword from "@c/login_page/ForgetPassword";
+import emailConfirm from "@c/login_page/emailConfirm";
 
 export default {
   name: "LoginPage",
@@ -20,7 +21,8 @@ export default {
   components: {
     Login,
     Register,
-    ForgetPassword
+    ForgetPassword,
+    emailConfirm
   },
   methods: {
     toLogin: function() {
@@ -36,6 +38,7 @@ export default {
       if (data === "Register") this.componentName = "Register";
       else if (data === "Login") this.componentName = "Login";
       else if (data === "ForgetPassword") this.componentName = "ForgetPassword";
+      else if (data === "emailConfirm") this.componentName = "emailConfirm";
     }
   }
 };

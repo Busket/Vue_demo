@@ -18,19 +18,6 @@
       <el-form-item label="邮箱" prop="email">
         <el-input type="text" placeholder="请输入邮箱" v-model="form.email" />
       </el-form-item>
-      <el-form-item label="激活码" prop="confirmCode">
-        <el-input
-          type="text"
-          placeholder="请输入激活码"
-          v-model="form.confirmCode"
-        ></el-input>
-        <el-button
-          type="primary"
-          :disabled="form.disabled"
-          v-on:click="sendConfirmCode()"
-          >{{ form.btntxt }}</el-button
-        >
-      </el-form-item>
       <el-form-item label="联系方式" prop="userPhone">
         <el-input
           type="text"
@@ -81,6 +68,8 @@
 </template>
 
 <script>
+import apis from "@/apis/apis";
+
 export default {
   name: "Register",
   data() {
@@ -90,11 +79,7 @@ export default {
         email: "",
         userPhone: "",
         password: "",
-        checkPassword: "",
-        confirmCode: "",
-        disabled: false,
-        time: 0,
-        btntxt: "获取验证码"
+        checkPassword: ""
       },
       // 表单验证，需要在 el-form-item 元素中增加 prop 属性
       rules: {
@@ -105,9 +90,6 @@ export default {
           { required: true, message: "密码不可为空", trigger: "blur" }
         ],
         email: [{ required: true, message: "邮箱不可为空", trigger: "blur" }],
-        confirmCode: [
-          { required: true, message: "激活码不可为空", trigger: "blur" }
-        ],
         userPhone: [
           { required: true, message: "联系方式不可为空", trigger: "blur" }
         ],
@@ -137,9 +119,29 @@ export default {
       // 为表单绑定验证功能
       this.$refs[formName].validate(valid => {
         if (valid) {
-          // 使用 vue-router 路由到指定页面，该方式称之为编程式导航
           //在这里提交表单信息
-          this.$router.push("/");
+          apis.registerApi
+            .registerIn(this.form)
+            .then(data => {
+              console.log("register_success:", data);
+              if (data && data.data) {
+                var json = data.data;
+                console.log(json);
+                if (json.code === 0) {
+                  //注册成功之后跳转回登录界面
+                  this.pathTo("Login");
+                  return;
+                } else if (json.message) {
+                  this.errorInfo.text = json.message;
+                }
+              }
+              this.errorInfo.isShowError = true;
+            })
+            .catch(err => {
+              console.log("error:", err);
+              this.errorInfo.isShowError = true;
+              this.errorInfo.text = "系统接口异常";
+            });
         } else {
           this.dialogVisible = true;
           return false;
@@ -148,31 +150,6 @@ export default {
     },
     pathTo(data) {
       this.$emit("changeComponent", data);
-    },
-    sendConfirmCode: function() {
-      var regEmail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/;
-      if (this.form.email === "") {
-        alert("请输入邮箱");
-      } else if (!regEmail.test(this.form.email)) {
-        alert(this.form.email);
-        alert("邮箱格式不正确");
-      } else {
-        this.form.time = 60;
-        this.form.disabled = true;
-        this.timer();
-        //在这里进行验证码的发送
-      }
-    },
-    timer() {
-      if (this.form.time > 0) {
-        this.form.time--;
-        this.form.btntxt = this.form.time + "s后重新获取";
-        setTimeout(this.timer, 1000);
-      } else {
-        this.form.time = 0;
-        this.form.btntxt = "获取验证码";
-        this.form.disabled = false;
-      }
     }
   }
 };
