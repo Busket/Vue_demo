@@ -41,7 +41,7 @@
       width="30%"
       :before-close="handleClose"
     >
-      <span>请输入账号和密码</span>
+      <span>{{ form.dialogText }}</span>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogVisible = false"
           >确 定</el-button
@@ -61,6 +61,7 @@ export default {
       form: {
         email: "",
         activeCode: "",
+        dialogText: "",
         disabled: false,
         time: 0,
         btntxt: "获取验证码"
@@ -95,6 +96,8 @@ export default {
                 var json = data.data;
                 if (json.status === "Success") {
                   this.pathTo("Login");
+                  this.dialogVisible = true;
+                  this.dialogText = "邮箱激活成功!请登录！";
                 } else if (json.status === "Fail") {
                   this.errorInfo.text = json.message;
                 } else if (json.status === "Authenticated") {
@@ -112,6 +115,7 @@ export default {
             });
         } else {
           this.dialogVisible = true;
+          this.dialogText = "请输入邮箱和激活码!";
           return false;
         }
       });

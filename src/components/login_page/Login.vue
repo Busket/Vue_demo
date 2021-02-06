@@ -98,14 +98,13 @@ export default {
               if (data && data.data) {
                 var json = data.data;
                 console.log(json);
-                console.log(json.userInfo.userEmail); //问题出在这里，json.status无法访问到需要的数据
+                // console.log(json.userInfo.userEmail); //问题出在这里，json.status无法访问到需要的数据
                 if (json.status === "SUCCESS") {
                   sessionStorage.setItem(
                     "userInfo",
                     JSON.stringify(json.userInfo)
                   );
                   console.log(sessionStorage.getItem("userInfo"));
-
                   // 取值时：把获取到的Json字符串转换回对象
                   var userJsonStr = sessionStorage.getItem("userInfo");
                   var userInfo = JSON.parse(userJsonStr);
@@ -148,8 +147,7 @@ export default {
                   //   json.data.rolePermissionVoList
                   // );
 
-                  // this.$router.push("/loginPage");
-                  this.pathTo("Login"); //跳转到登录页面
+                  this.$router.push("/");
                   return;
                 } else if (json.message) {
                   this.errorInfo.text = json.message;

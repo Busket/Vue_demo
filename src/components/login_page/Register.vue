@@ -57,7 +57,7 @@
       width="30%"
       :before-close="handleClose"
     >
-      <span>请确认输入信息完整！</span>
+      <span>{{ dialogText }}</span>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogVisible = false"
           >确 定</el-button
@@ -79,7 +79,12 @@ export default {
         email: "",
         userPhone: "",
         password: "",
-        checkPassword: ""
+        checkPassword: "",
+        dialogText: ""
+      },
+      errorInfo: {
+        text: "注册失败,请重试！",
+        isShowError: false //显示错误提示
       },
       // 表单验证，需要在 el-form-item 元素中增加 prop 属性
       rules: {
@@ -127,7 +132,9 @@ export default {
               if (data && data.data) {
                 var json = data.data;
                 console.log(json);
-                if (json.code === 0) {
+                if (json.status === "Success") {
+                  // this.dialogText = json.message;
+                  // this.dialogVisible = true;
                   //注册成功之后跳转回登录界面
                   this.pathTo("Login");
                   return;
@@ -143,6 +150,7 @@ export default {
               this.errorInfo.text = "系统接口异常";
             });
         } else {
+          this.dialogText = "请确认输入信息完整！";
           this.dialogVisible = true;
           return false;
         }
