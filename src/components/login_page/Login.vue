@@ -30,7 +30,7 @@
         <el-button type="primary" v-on:click="pathTo('ForgetPassword')"
           >忘记密码</el-button
         >
-        <el-button type="primary" v-on:click="pathTo('emailConfirm')"
+        <el-button type="primary" v-on:click="pathTo('EmailConfirm')"
           >邮箱激活</el-button
         >
       </el-form-item>
@@ -110,34 +110,9 @@ export default {
                   var userInfo = JSON.parse(userJsonStr);
                   console.log(userInfo.userName); // => tom
 
-                  // this.$common.setSessionStorage(
-                  //   "userToken",
-                  //   json.userInfo.userToken
-                  // );
-                  // this.$common.setSessionStorage(
-                  //   "userEmail",
-                  //   json.userInfo.userEmail
-                  // );
-                  // this.$common.setSessionStorage(
-                  //   "userName",
-                  //   json.userInfo.userName
-                  // );
-                  // this.$common.setSessionStorage(
-                  //   "userId",
-                  //   json.userInfo.userId
-                  // );
-                  // this.$common.setSessionStorage(
-                  //   "userPhone",
-                  //   json.userInfo.userPhone
-                  // );
-                  // this.$common.setSessionStorage(
-                  //   "userJurisdiction",
-                  //   json.userInfo.userJurisdiction
-                  // );
-                  // console.log(this.$common.getSessionStorage("userName"));
-                  // //存入菜单,渲染菜单
-                  // this.$store.dispatch("add_Menus", json.data.sysMenuVoList);
-                  //
+                  //存入菜单,渲染菜单
+                  this.$store.dispatch("add_Menus", json.data.sysMenuVoList);
+
                   // //动态设置路由
                   // this.$store.dispatch("add_Routes", json.data.sysMenuVoList);
                   //

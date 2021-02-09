@@ -1,5 +1,6 @@
 import shiroApi from "./shiroApi";
 import registerApi from "@/apis/registerApi";
+import forgetPasswordApi from "@/apis/forgetPasswordApi";
 
 /**
  * 接口汇总
@@ -9,8 +10,10 @@ export default {
   // adminApi: adminApi,
   /**认证接口 */
   shiroApi: shiroApi,
-  /**蚂蚁种树接口 */
-  registerApi: registerApi
+  /**注册接口 */
+  registerApi: registerApi,
+  /**忘记密码接口 */
+  forgetPasswordApi: forgetPasswordApi
   // /**消息接口 */
   // msgApi: msgApi
 };
