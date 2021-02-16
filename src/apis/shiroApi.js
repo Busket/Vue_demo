@@ -1,4 +1,5 @@
 import Axios from "axios";
+import * as API from "@/apis/index";
 
 /**
  * 系统认证接口
@@ -17,6 +18,7 @@ export default {
     //return Axios.post("/api/shiro-api/login", param);
     //return Axios.post("http://47.103.26.140:3000/mock/42/login", param);
     return Axios.post("/api/login", param);
+    // return API.POST("/login", param); //这个需要测试一下，如果可以的话本页面的其他return也要进行一定的修改
   },
   /**
    * 退出登陆

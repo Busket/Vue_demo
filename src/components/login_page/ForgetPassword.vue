@@ -17,6 +17,8 @@
           placeholder="请输入联系方式"
           v-model="form.phone"
         ></el-input>
+      </el-form-item>
+      <el-form-item>
         <el-button
           type="primary"
           :disabled="form.disabled"
@@ -26,6 +28,8 @@
         <el-button type="primary" v-on:click="onSubmit('ForgetPasswordForm')"
           >确认</el-button
         >
+      </el-form-item>
+      <el-form-item>
         <el-button type="primary" v-on:click="pathTo('Login')">登录</el-button>
       </el-form-item>
       <el-form-item>

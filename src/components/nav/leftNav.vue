@@ -99,12 +99,12 @@ export default {
       }
     }
   },
-  watch: {
-    $route: function(to, from) {
-      // 路由改变时执行
-      //console.info("to.path:" + to.path);
-    }
-  },
+  // watch: {
+  //   $route: function(to, from) {
+  //     // 路由改变时执行
+  //     //console.info("to.path:" + to.path);
+  //   }
+  // },
   mounted() {
     this.defaultLeftNavOpened();
   }

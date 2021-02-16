@@ -14,7 +14,9 @@
       </div>
       <div class="topbar-title">
         <!-- 注意：这里就是topNavState作用之处，根据当前路由所在根路由的type值判断显示不同顶部导航菜单 -->
-        <el-row v-show="$store.state.topNavState === 'Home'">
+        <!--        这里是 首页 的情况下，顶端的显示-->
+        <el-row>
+          <!--        <el-row v-show="$store.state.topNavState === 'Home'">-->
           <el-col :span="24">
             <el-menu
               :default-active="defaultActiveIndex"
@@ -25,27 +27,31 @@
             >
               <el-menu-item index="/">工作台</el-menu-item>
               <el-menu-item index="/enterpriseManager">企业管理</el-menu-item>
-              <el-menu-item index="/orderManager">订单管理</el-menu-item>
-              <el-menu-item index="/systemManager">系统管理</el-menu-item>
+              <el-menu-item index="/userManager">用户管理</el-menu-item>
+              <el-menu-item index="/vehicleManager">车辆管理</el-menu-item>
+              <el-menu-item index="/deptManager">部门管理</el-menu-item>
+              <!-- 这里是 首页 顶端栏的显示的按钮，可以在这里进行修改 -->
             </el-menu>
           </el-col>
         </el-row>
-        <el-row v-show="$store.state.topNavState === 'enterprise'">
-          <el-col :span="24">
-            <el-menu
-              :default-active="defaultActiveIndex"
-              class="el-menu-demo"
-              mode="horizontal"
-              @select="handleSelect"
-              :router="true"
-            >
-              <el-menu-item index="/enterpriseManager">企业信息</el-menu-item>
-              <el-menu-item index="/vehicleManager">车辆信息</el-menu-item>
-              <el-menu-item index="/deptManager">组织架构</el-menu-item>
-            </el-menu>
-          </el-col>
-        </el-row>
+        <!--        这里是 企业管理 的组件，设置顶端栏的显示-->
+        <!--        <el-row v-show="$store.state.topNavState === 'enterprise'">-->
+        <!--          <el-col :span="24">-->
+        <!--            <el-menu-->
+        <!--              :default-active="defaultActiveIndex"-->
+        <!--              class="el-menu-demo"-->
+        <!--              mode="horizontal"-->
+        <!--              @select="handleSelect"-->
+        <!--              :router="true"-->
+        <!--            >-->
+        <!--              <el-menu-item index="/enterpriseManager">企业信息</el-menu-item>-->
+        <!--              <el-menu-item index="/vehicleManager">车辆信息</el-menu-item>-->
+        <!--              <el-menu-item index="/deptManager">组织架构</el-menu-item>-->
+        <!--            </el-menu>-->
+        <!--          </el-col>-->
+        <!--        </el-row>-->
       </div>
+      <!--      这里是右上角的按钮，到时在这里添加接口！！！-->
       <div class="topbar-account topbar-btn">
         <el-dropdown trigger="click">
           <span class="el-dropdown-link userinfo-inner">
@@ -94,7 +100,7 @@ export default {
 
     road.$on("goto", url => {
       if (url === "/login") {
-        localStorage.removeItem("access-user");
+        sessionStorage.removeItem("access-user");
         this.$router.push(url);
       }
     });
@@ -152,14 +158,15 @@ export default {
       })
         .then(() => {
           //确认
-          localStorage.removeItem("access-user");
-          road.$emit("goto", "/login");
+          sessionStorage.removeItem("access-user");
+          // road.$emit("goto", "/loginPage");
+          this.$router.push("/loginPage");
         })
         .catch(() => {});
     }
   },
   mounted() {
-    let user = window.localStorage.getItem("access-user");
+    let user = window.sessionStorage.getItem("access-user");
     if (user) {
       user = JSON.parse(user);
       this.nickname = user.nickname || "";

@@ -30,10 +30,12 @@
         <el-button type="primary" v-on:click="pathTo('ForgetPassword')"
           >忘记密码</el-button
         >
+      </el-form-item>
+      <el-form-item>
         <el-button type="primary" v-on:click="pathTo('EmailConfirm')"
           >邮箱激活</el-button
-        >
-      </el-form-item>
+        ></el-form-item
+      >
       <el-form-item>
         <span v-show="this.errorInfo.isShowError" class="error">
           {{ this.errorInfo.text }}
