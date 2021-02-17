@@ -53,18 +53,20 @@
           width="180"
         ></el-table-column>
         <el-table-column
-          prop="create_at"
+          prop="creat_at"
           label="创建日期"
           width="180"
+          :formatter="createTimeFormat"
         ></el-table-column>
         <el-table-column
           prop="update_at"
           label="更新日期"
           width="180"
+          :formatter="updateTimeFormat"
         ></el-table-column>
         <!--          这个状态指的是是否激活的状态-->
         <el-table-column
-          prop="status"
+          prop="activecode"
           label="状态"
           width="180"
         ></el-table-column>
@@ -104,6 +106,7 @@
 </template>
 <script>
 import apis from "@/apis/apis";
+
 export default {
   data() {
     return {
@@ -121,9 +124,9 @@ export default {
           email: "123@qq.com",
           phone: "123123",
           jurisdiction: "3",
-          create_at: "2017-03-27",
+          creat_at: "2017-03-27",
           update_at: "2016-03-27",
-          status: "1"
+          activecode: "1"
         }
       ],
       multipleSelection: [],
@@ -190,6 +193,12 @@ export default {
     },
     setLoding(bool) {
       this.loading = bool;
+    },
+    createTimeFormat(row) {
+      return new Date(parseInt(row.creat_at)).toLocaleString();
+    },
+    updateTimeFormat(row) {
+      return new Date(parseInt(row.update_at)).toLocaleString();
     }
   }
 };
