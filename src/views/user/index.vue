@@ -87,6 +87,19 @@
         </el-pagination>
       </el-col>
     </el-row>
+    <el-dialog
+      title="温馨提示"
+      :visible.sync="dialogVisible"
+      width="30%"
+      :before-close="handleClose"
+    >
+      <span>{{ dialogText }}}</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogVisible = false"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -94,6 +107,8 @@ import apis from "@/apis/apis";
 export default {
   data() {
     return {
+      dialogText: "温馨提示",
+      dialogVisible: false,
       loading: false,
       keyword: "用户",
       total: 5,
@@ -143,7 +158,7 @@ export default {
       this.loading = true; //调出拼命加载中
       apis.userApi
         .findList(params) //在这里插入后端浏览列表
-        .then(data=> {
+        .then(data => {
           console.log(data.count);
           console.log(data.curr);
           console.log(data.data);
@@ -152,8 +167,10 @@ export default {
           this.tableData = data.data; //这里是数据
           this.setLoding(false);
         })
-        .catch(function(error) {
+        .catch(error => {
           this.loading = false;
+          this.dialogText = error.message;
+          this.dialogVisible = true;
           console.log(error);
         });
     },
