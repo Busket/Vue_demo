@@ -16,6 +16,8 @@ import Maillist from "@/views/workbench/maillist.vue";
 // import EnterpriseValidate from "@/views/enterprise/validate.vue";
 //用户管理当中的东西
 import UserList from "@/views/user/index";
+import UserDetail from "@/views/user/detail";
+import AddUser from "@/views/user/add";
 //车辆管理当中的东西
 import VehicleManage from "@/views/vehicle/index.vue";
 //部门管理
@@ -47,7 +49,7 @@ const routes = [
         },
         leaf: true, // 只有一个节点
         iconCls: "iconfont icon-home", // 图标样式class
-        menuShow: true
+        menuShow: true //左侧栏是否显示
       },
       {
         path: "/mySet",
@@ -92,7 +94,7 @@ const routes = [
     children: [
       {
         path: "/userManager/list",
-        name: "用户信息",
+        name: "用户浏览",
         components: {
           default: UserList,
           top: TopNav,
@@ -101,6 +103,30 @@ const routes = [
         leaf: true,
         iconCls: "el-icon-setting",
         menuShow: true
+      },
+      {
+        path: "/userManager/detail",
+        name: "用户详情",
+        components: {
+          default: UserDetail,
+          top: TopNav,
+          aside: LeftNav
+        },
+        leaf: true,
+        iconCls: "el-icon-setting",
+        menuShow: false
+      },
+      {
+        path: "/userManager/add",
+        name: "添加用户",
+        components: {
+          default: AddUser,
+          top: TopNav,
+          aside: LeftNav
+        },
+        leaf: true,
+        iconCls: "el-icon-setting",
+        menuShow: false
       }
       // {
       //   path: "/enterprise/detail",

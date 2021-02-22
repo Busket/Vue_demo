@@ -111,9 +111,9 @@ export default {
                   var userJsonStr = sessionStorage.getItem("userInfo");
                   var userInfo = JSON.parse(userJsonStr);
                   console.log(userInfo.userName); // => tom
-
-                  //存入菜单,渲染菜单
-                  this.$store.dispatch("add_Menus", json.data.sysMenuVoList);
+                  //
+                  // //存入菜单,渲染菜单
+                  // this.$store.dispatch("add_Menus", json.data.sysMenuVoList);
 
                   // //动态设置路由
                   // this.$store.dispatch("add_Routes", json.data.sysMenuVoList);

@@ -8,10 +8,10 @@
       class="Register-box"
     >
       <h3 class="Register-title">欢迎注册</h3>
-      <el-form-item label="昵称" prop="userName">
+      <el-form-item label="姓名" prop="userName">
         <el-input
           type="text"
-          placeholder="请输入昵称"
+          placeholder="请输入姓名"
           v-model="form.userName"
         />
       </el-form-item>
@@ -93,7 +93,7 @@ export default {
       // 表单验证，需要在 el-form-item 元素中增加 prop 属性
       rules: {
         userName: [
-          { required: true, message: "昵称不可为空", trigger: "blur" }
+          { required: true, message: "姓名不可为空", trigger: "blur" }
         ],
         password: [
           { required: true, message: "密码不可为空", trigger: "blur" }

@@ -8,7 +8,10 @@ export default {
   findList: params => {
     return API.GET("/api/getUserList", params);
   },
-  findById: id => {
-    return API.GET(`/api/enterprise/list/${id}`);
+  findByEmail: params => {
+    return API.GET(`/api/enterprise/list/${params}`);
+  },
+  updateUser: params => {
+    return API.GET(`/api/enterprise/list/${params}`);
   }
 };
