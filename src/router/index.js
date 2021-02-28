@@ -9,6 +9,8 @@ import MySettings from "@/views/workbench/mySettings.vue";
 import Plan from "@/views/workbench/plan/plan.vue";
 import Mission from "@/views/workbench/mission/mission.vue";
 import Maillist from "@/views/workbench/maillist.vue";
+import Appointment from "@/views/workbench/appointment/index";
+import AppointmentDetail from "@/views/workbench/appointment/detail";
 //企业管理当中的东西
 // import EnterpriseList from "@/views/enterprise/index.vue";
 // import EnterpriseAdd from "@/views/enterprise/add.vue";
@@ -21,8 +23,17 @@ import AddUser from "@/views/user/add";
 //车辆管理当中的东西
 import VehicleManage from "@/views/vehicle/index.vue";
 //部门管理
-import DeptManager from "@/views/dept/index.vue";
 import leadership from "@/views/dept/leadership";
+import academicAffairsSection from "@/views/dept/academicAffairsSection";
+import businessDepartment from "@/views/dept/businessDepartment";
+import coachingSection from "@/views/dept/coachingSection";
+import financeSection from "@/views/dept/financeSection";
+import generalAffairsSection from "@/views/dept/generalAffairsSection";
+import informationCenter from "@/views/dept/informationCenter";
+import office from "@/views/dept/office";
+import AddStaff from "@/views/dept/add";
+import StaffDetail from "@/views/dept/detail";
+
 
 Vue.use(VueRouter);
 
@@ -50,6 +61,30 @@ const routes = [
         leaf: true, // 只有一个节点
         iconCls: "iconfont icon-home", // 图标样式class
         menuShow: true //左侧栏是否显示
+      },
+      {
+        path: "/appointment/index",
+        name: "练车预约",
+        components: {
+          default: Appointment,
+          top: TopNav,
+          aside: LeftNav
+        },
+        leaf: true, // 只有一个节点
+        iconCls: "el-icon-menu", // 图标样式class
+        menuShow: true //左侧栏是否显示
+      },
+      {
+        path: "/appointment/detail",
+        name: "科目二练车预约",
+        components: {
+          default: AppointmentDetail,
+          top: TopNav,
+          aside: LeftNav
+        },
+        leaf: true, // 只有一个节点
+        iconCls: "el-icon-menu", // 图标样式class
+        menuShow: false //左侧栏是否显示
       },
       {
         path: "/mySet",
@@ -251,7 +286,7 @@ const routes = [
     type: "enterprise",
     name: "dept",
     component: Home,
-    redirect: "/dept/list",
+    redirect: "/dept/leadership",
     menuShow: true,
     children: [
       {
@@ -267,10 +302,10 @@ const routes = [
         menuShow: true
       },
       {
-        path: "/dept/list",
+        path: "/dept/office",
         name: "办公室",
         components: {
-          default: DeptManager,
+          default: office,
           top: TopNav,
           aside: LeftNav
         },
@@ -279,10 +314,10 @@ const routes = [
         menuShow: true
       },
       {
-        path: "/dept/list",
+        path: "/dept/informationCenter",
         name: "信息中心",
         components: {
-          default: DeptManager,
+          default: informationCenter,
           top: TopNav,
           aside: LeftNav
         },
@@ -291,10 +326,10 @@ const routes = [
         menuShow: true
       },
       {
-        path: "/dept/list",
+        path: "/dept/coachingSection",
         name: "教练科",
         components: {
-          default: DeptManager,
+          default: coachingSection,
           top: TopNav,
           aside: LeftNav
         },
@@ -303,10 +338,10 @@ const routes = [
         menuShow: true
       },
       {
-        path: "/dept/list",
+        path: "/dept/academicAffairsSection",
         name: "教务科",
         components: {
-          default: DeptManager,
+          default: academicAffairsSection,
           top: TopNav,
           aside: LeftNav
         },
@@ -315,10 +350,10 @@ const routes = [
         menuShow: true
       },
       {
-        path: "/dept/list",
+        path: "/dept/businessDepartment",
         name: "业务科",
         components: {
-          default: DeptManager,
+          default: businessDepartment,
           top: TopNav,
           aside: LeftNav
         },
@@ -327,10 +362,10 @@ const routes = [
         menuShow: true
       },
       {
-        path: "/dept/list",
+        path: "/dept/financeSection",
         name: "财务科",
         components: {
-          default: DeptManager,
+          default: financeSection,
           top: TopNav,
           aside: LeftNav
         },
@@ -339,16 +374,40 @@ const routes = [
         menuShow: true
       },
       {
-        path: "/dept/list",
+        path: "/dept/generalAffairsSection",
         name: "总务科",
         components: {
-          default: DeptManager,
+          default: generalAffairsSection,
           top: TopNav,
           aside: LeftNav
         },
         leaf: true, // 只有一个节点
         iconCls: "iconfont icon-home", // 图标样式class
         menuShow: true
+      },
+      {
+        path: "/dept/add",
+        name: "添加员工",
+        components: {
+          default: AddStaff,
+          top: TopNav,
+          aside: LeftNav
+        },
+        leaf: true,
+        iconCls: "el-icon-setting",
+        menuShow: false
+      },
+      {
+        path: "/dept/detail",
+        name: "添加员工",
+        components: {
+          default: StaffDetail,
+          top: TopNav,
+          aside: LeftNav
+        },
+        leaf: true,
+        iconCls: "el-icon-setting",
+        menuShow: false
       }
     ]
   },

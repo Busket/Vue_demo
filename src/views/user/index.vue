@@ -1,16 +1,17 @@
 <template>
   <div class="warp-main">
-    <el-row
-      :span="24"
-      v-loading="loading"
-      element-loading-text="拼命加载中"
-    >
-      <el-col :gutter="360" :span="24" class="toolbar" style="padding-bottom: 0;">
+    <el-row :span="24" v-loading="loading" element-loading-text="拼命加载中">
+      <el-col
+        :gutter="360"
+        :span="24"
+        class="toolbar"
+        style="padding-bottom: 0;"
+      >
         <el-form :inline="true" :model="filters">
           <el-form-item>
             <el-input
-              v-model="filters.name"
-              placeholder="请输入用户名称"
+              v-model="filters.email"
+              placeholder="请输入用户邮箱"
               auto-complete="off"
               @keyup.enter.native="fetchData"
             ></el-input>
@@ -22,7 +23,7 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" size="medium" v-on:click="creatUser()"
-            >添加用户</el-button
+              >添加用户</el-button
             >
           </el-form-item>
         </el-form>
@@ -167,7 +168,7 @@ export default {
       ],
       multipleSelection: [],
       filters: {
-        name: ""
+        email: ""
       }
     };
   },
@@ -192,7 +193,7 @@ export default {
       let params = {
         curr: this.currentPage, //当前页
         pageSize: this.pageSize, //每页的大小
-        keywords: this.filters.name //关键字？  filter-过滤
+        keywords: this.filters.email //关键字？  filter-过滤
       };
       this.loading = true; //调出拼命加载中
       apis.userApi
@@ -243,6 +244,8 @@ export default {
         return "学员";
       } else if (row.jurisdiction === 103) {
         return "教练";
+      } else if (row.jurisdiction === 104) {
+        return "行政";
       } else {
         return "未知";
       }
@@ -280,8 +283,8 @@ export default {
       this.$router.push({ path: "/userManager/detail", query: { email: val } }); //用go刷新
       // this.jumpTo({ name: "/userManager/detail", params: { email: val } });
     },
-    creatUser(){
-      this.$router.push( "/userManager/add"); //用go刷新
+    creatUser() {
+      this.$router.push("/userManager/add"); //用go刷新
     }
   }
 };

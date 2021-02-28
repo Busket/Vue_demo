@@ -26,7 +26,6 @@
               :router="true"
             >
               <el-menu-item index="/">工作台</el-menu-item>
-              <el-menu-item index="/enterpriseManager">企业管理</el-menu-item>
               <el-menu-item index="/userManager">用户管理</el-menu-item>
               <el-menu-item index="/vehicleManager">车辆管理</el-menu-item>
               <el-menu-item index="/deptManager">部门管理</el-menu-item>

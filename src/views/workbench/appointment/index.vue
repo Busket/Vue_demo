@@ -36,7 +36,7 @@
           width="268"
         >
           <template slot-scope="scope">
-            <el-button type="primary" @click="modifyUser(scope.row.email)"
+            <el-button type="primary" @click="pathTo('Subject_2')"
               >科目二预约</el-button
             >
             <el-button type="primary" @click="deleteUser(scope.row.email)"
@@ -45,8 +45,6 @@
           </template>
         </el-table-column>
       </el-table>
-
-
     </el-row>
     <el-dialog
       title="温馨提示"
@@ -80,12 +78,13 @@ export default {
     };
   },
   methods: {
-
+    pathTo(subject) {
+      this.$router.push({
+        path: "/appointment/detail",
+        query: { subject: subject }
+      }); //用go刷新
+    }
   }
 };
 </script>
-<style>
-.is-selected {
-  color: #1989fa;
-}
-</style>
+<style></style>

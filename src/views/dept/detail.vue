@@ -1,82 +1,99 @@
 <template>
   <div class="warp-main">
     <el-row :span="24" v-loading="loading" element-loading-text="拼命加载中">
+      <el-col :span="24" class="toolbar" style="padding-bottom: 0;">
+        <el-form :inline="true" :model="filters">
+          <el-form-item>
+            <el-input
+              v-model="filters.name"
+              placeholder="请输入用户名称"
+              auto-complete="off"
+              @keyup.enter.native="fetchData"
+            ></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" size="medium" v-on:click="fetchData"
+              >查询</el-button
+            >
+          </el-form-item>
+        </el-form>
+      </el-col>
 
       <el-form
         :label-position="labelPosition"
         label-width="80px"
-        :model="userData"
+        :model="staffData"
         ref="ruleForm"
       >
         <el-row :gutter="60">
           <el-col :span="10">
             <el-form-item label="姓名" prop="name" width="60">
-              <el-input v-model="userData.name"></el-input>
+              <el-input v-model="staffData.name"></el-input>
             </el-form-item>
           </el-col>
 
           <el-col :span="10">
             <el-form-item label="联系方式" prop="phone">
-              <el-input v-model="userData.phone"></el-input> </el-form-item
+              <el-input v-model="staffData.phone"></el-input> </el-form-item
           ></el-col>
         </el-row>
 
         <el-row :gutter="60">
           <el-col :span="10">
             <el-form-item label="邮箱" prop="email" width="60">
-              <el-input v-model="userData.email"></el-input> </el-form-item
+              <el-input v-model="staffData.email"></el-input> </el-form-item
           ></el-col>
 
-          <el-col :span="10">
-            <el-form-item label="更新时间" prop="update_at" width="60">
-              <el-input
-                v-model="userData.update_at"
-                :disabled="true"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
+<!--          <el-col :span="10">-->
+<!--            <el-form-item label="更新时间" prop="update_at" width="60">-->
+<!--              <el-input-->
+<!--                v-model="userData.update_at"-->
+<!--                :disabled="true"-->
+<!--              ></el-input>-->
+<!--            </el-form-item>-->
+<!--          </el-col>-->
+<!--        </el-row>-->
 
-        <el-row :gutter="60">
-          <el-col :span="10">
-            <el-form-item label="密码" prop="password" width="60">
-              <el-input v-model="userData.password"></el-input> </el-form-item
-          ></el-col>
+<!--        <el-row :gutter="60">-->
+<!--          <el-col :span="10">-->
+<!--            <el-form-item label="密码" prop="password" width="60">-->
+<!--              <el-input v-model="userData.password"></el-input> </el-form-item-->
+<!--          ></el-col>-->
 
-          <el-col :span="10">
-            <el-form-item label="创建时间" prop="creat_at">
-              <el-input
-                v-model="userData.creat_at"
-                :disabled="true"
-              ></el-input> </el-form-item
-          ></el-col>
-        </el-row>
+<!--          <el-col :span="10">-->
+<!--            <el-form-item label="创建时间" prop="creat_at">-->
+<!--              <el-input-->
+<!--                v-model="userData.creat_at"-->
+<!--                :disabled="true"-->
+<!--              ></el-input> </el-form-item-->
+<!--          ></el-col>-->
+<!--        </el-row>-->
 
-        <el-row :gutter="60">
-          <el-col :span="10">
-            <el-form-item label="权限" prop="jurisdiction">
-              <el-input v-model="userData.jurisdiction"></el-input>
-              <!--              :formatter="jurisdictionFormat"-->
-            </el-form-item>
-          </el-col>
+<!--        <el-row :gutter="60">-->
+<!--          <el-col :span="10">-->
+<!--            <el-form-item label="权限" prop="jurisdiction">-->
+<!--              <el-input v-model="userData.jurisdiction"></el-input>-->
+<!--              &lt;!&ndash;              :formatter="jurisdictionFormat"&ndash;&gt;-->
+<!--            </el-form-item>-->
+<!--          </el-col>-->
 
-          <el-col :span="10">
-            <el-form-item label="激活码" prop="activecode">
-              <el-input v-model="userData.activecode"></el-input> </el-form-item
-          ></el-col>
-        </el-row>
-        <el-row :gutter="60">
-          <el-col :span="10">
-            <el-form-item label="激活时间" prop="email_verified_at">
-              <el-input
-                v-model="userData.email_verified_at"
-                :disabled="true"
-              ></el-input> </el-form-item
-          ></el-col>
+<!--          <el-col :span="10">-->
+<!--            <el-form-item label="激活码" prop="activecode">-->
+<!--              <el-input v-model="userData.activecode"></el-input> </el-form-item-->
+<!--          ></el-col>-->
+<!--        </el-row>-->
+<!--        <el-row :gutter="60">-->
+<!--          <el-col :span="10">-->
+<!--            <el-form-item label="激活时间" prop="email_verified_at">-->
+<!--              <el-input-->
+<!--                v-model="userData.email_verified_at"-->
+<!--                :disabled="true"-->
+<!--              ></el-input> </el-form-item-->
+<!--          ></el-col>-->
 
           <el-row :gutter="20">
             <el-col :span="2" :offset="3">
-              <el-button type="primary" @click="submitForm(userData)"
+              <el-button type="primary" @click="submitForm(staffData)"
                 >修改</el-button
               >
             </el-col>
@@ -119,7 +136,7 @@ export default {
       total: 5,
       currentPage: 1,
       pageSize: 10,
-      userData: {
+      staffData: {
         name: "小黑黑",
         password: "123",
         email: "",
@@ -131,6 +148,9 @@ export default {
         email_verified_at: "2016-03-27"
       },
       multipleSelection: [],
+      filters: {
+        name: ""
+      },
       state: ""
     };
   },

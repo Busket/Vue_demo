@@ -18,12 +18,12 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" size="medium" v-on:click="fetchData"
-              >查询</el-button
+            >查询</el-button
             >
           </el-form-item>
           <el-form-item>
             <el-button type="primary" size="medium" v-on:click="creatStaff()"
-              >添加用户</el-button
+            >添加用户</el-button
             >
           </el-form-item>
         </el-form>
@@ -58,10 +58,10 @@
         >
           <template slot-scope="scope">
             <el-button type="warning" @click="modifyStaff(scope.row.email)"
-              >修改</el-button
+            >修改</el-button
             >
             <el-button type="danger" @click="deleteStaff(scope.row.email)"
-              >删除</el-button
+            >删除</el-button
             >
           </template>
         </el-table-column>

@@ -38,13 +38,13 @@
           <el-table-column type="expand">
             <template slot-scope="props">
               <el-form label-position="left" inline class="info-table-expand">
-                <el-form-item label="计划编号：">
+                <el-form-item label="车牌号：">
                   <span>{{ props.row.pNum }}</span>
                 </el-form-item>
-                <el-form-item label="计划名称：">
+                <el-form-item label="场地：">
                   <span>{{ props.row.name }}</span>
                 </el-form-item>
-                <el-form-item label="计划内容：">
+                <el-form-item label="教练：">
                   <span>{{ props.row.content }}</span>
                 </el-form-item>
                 <el-form-item label="开始时间：">
@@ -59,9 +59,9 @@
               </el-form>
             </template>
           </el-table-column>
-          <el-table-column label="计划编号" prop="pNum"></el-table-column>
-          <el-table-column label="计划名称" prop="name"></el-table-column>
-          <el-table-column label="计划内容" prop="content"></el-table-column>
+          <el-table-column label="车牌号" prop="pNum"></el-table-column>
+          <el-table-column label="场地" prop="name"></el-table-column>
+          <el-table-column label="教练" prop="content"></el-table-column>
         </el-table>
       </el-col>
       <!--分页-->
@@ -89,7 +89,7 @@
   </div>
 </template>
 <script>
-import PlanDetail from "./detail";
+import PlanDetail from "./particulars";
 export default {
   name: "plan",
   data() {
@@ -180,15 +180,15 @@ export default {
     handleSearch() {
       // ...
     },
-    // 选择每页显示条数
-    handleSizeChange(val) {
-      //        this.pageSize = val;
-      //        this.currentPage = 1;
-    },
-    // 跳转页
-    handleCurrentChange(val) {
-      //        this.currentPage = val;
-    }
+    // // 选择每页显示条数
+    // handleSizeChange(val) {
+    //   //        this.pageSize = val;
+    //   //        this.currentPage = 1;
+    // },
+    // // 跳转页
+    // handleCurrentChange(val) {
+    //   //        this.currentPage = val;
+    // }
   }
 };
 </script>
