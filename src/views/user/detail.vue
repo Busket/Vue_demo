@@ -1,7 +1,6 @@
 <template>
   <div class="warp-main">
     <el-row :span="24" v-loading="loading" element-loading-text="拼命加载中">
-
       <el-form
         :label-position="labelPosition"
         label-width="80px"
@@ -32,6 +31,7 @@
               <el-input
                 v-model="userData.update_at"
                 :disabled="true"
+                :formatter="updateTimeFormat"
               ></el-input>
             </el-form-item>
           </el-col>
@@ -39,9 +39,13 @@
 
         <el-row :gutter="60">
           <el-col :span="10">
-            <el-form-item label="密码" prop="password" width="60">
-              <el-input v-model="userData.password"></el-input> </el-form-item
-          ></el-col>
+            <el-form-item label="密码" width="60">
+              <!--              <el-input v-model="userData.password"></el-input> </el-form-item>-->
+              <el-button type="primary" @click="resetUserPassword()"
+                >重置密码</el-button
+              ></el-form-item
+            >
+          </el-col>
 
           <el-col :span="10">
             <el-form-item label="创建时间" prop="creat_at">
@@ -55,15 +59,27 @@
         <el-row :gutter="60">
           <el-col :span="10">
             <el-form-item label="权限" prop="jurisdiction">
-              <el-input v-model="userData.jurisdiction"></el-input>
-              <!--              :formatter="jurisdictionFormat"-->
+              <!--              <el-input v-model="userData.jurisdiction"></el-input>-->
+              <el-select v-model="userData.jurisdiction" placeholder="请选择">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
 
           <el-col :span="10">
             <el-form-item label="激活码" prop="activecode">
-              <el-input v-model="userData.activecode"></el-input> </el-form-item
+              <el-input
+                v-model="userData.activecode"
+                :disabled="true"
+              ></el-input> </el-form-item
           ></el-col>
+          <el-button type="primary" @click="active()">一键激活</el-button>
         </el-row>
         <el-row :gutter="60">
           <el-col :span="10">
@@ -74,7 +90,7 @@
               ></el-input> </el-form-item
           ></el-col>
 
-          <el-row :gutter="20">
+          <el-row :gutter="100">
             <el-col :span="2" :offset="3">
               <el-button type="primary" @click="submitForm(userData)"
                 >修改</el-button
@@ -95,7 +111,7 @@
       width="30%"
       :before-close="handleClose"
     >
-      <span>{{ dialogText }}}</span>
+      <span>{{ dialogText }}</span>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogVisible = false"
           >确 定</el-button
@@ -120,36 +136,70 @@ export default {
       currentPage: 1,
       pageSize: 10,
       userData: {
+        id: "",
         name: "小黑黑",
-        password: "123",
+        password: "",
         email: "",
-        phone: "123123",
-        jurisdiction: 102,
-        creat_at: "2017-03-27",
-        update_at: "2016-03-27",
-        activecode: "1",
-        email_verified_at: "2016-03-27"
+        phone: "",
+        jurisdiction: "",
+        creat_at: "",
+        update_at: "",
+        activecode: "",
+        email_verified_at: ""
       },
       multipleSelection: [],
-      state: ""
+      state: "",
+      options: [
+        {
+          value: 101,
+          label: "超级管理员"
+        },
+        {
+          value: 102,
+          label: "学员"
+        },
+        {
+          value: 103,
+          label: "教练"
+        },
+        {
+          value: 104,
+          label: "行政"
+        }
+      ]
     };
   },
   created: function() {
     // 组件创建完后获取数据，
     // 此时 data 已经被 observed 了
-    var param = this.$route.query.email; //将获取道德email发送给后端，让后端根据该邮箱查询用户所有信息
-    // this.fetchData(param); //调用接口获取动态数据
+    this.userData.email = this.$route.query.email; //将获取道德email发送给后端，让后端根据该邮箱查询用户所有信息
+    this.fetchData(); //调用接口获取动态数据
   },
   methods: {
     //获取数据
     fetchData() {
-      let params = {};
       this.loading = true; //调出拼命加载中
+      let params = { email: this.userData.email };
       apis.userApi
-        .findByEmail(params) //还需要写接口
+        .findByEmail(params)
         .then(data => {
-          console.log(data.data);
-          this.data = data.data; //这里是数据
+          console.log(data.userInfo);
+          this.userData.id = data.userInfo.id;
+          this.userData.name = data.userInfo.name;
+          this.userData.password = data.userInfo.password;
+          this.userData.email = data.userInfo.email;
+          this.userData.phone = data.userInfo.phone;
+          this.userData.jurisdiction = data.userInfo.jurisdiction;
+          this.userData.creat_at = this.changeTimeFormat(
+            data.userInfo.creat_at
+          );
+          this.userData.update_at = this.changeTimeFormat(
+            data.userInfo.update_at
+          );
+          this.userData.activecode = data.userInfo.activecode;
+          this.userData.email_verified_at = this.changeTimeFormat(
+            data.userInfo.email_verified_at
+          );
           this.setLoding(false);
         })
         .catch(error => {
@@ -159,51 +209,152 @@ export default {
           console.log(error);
         });
     },
-    submitForm(userData) {
-      apis.userApi
-        .updateUser(userData) //还需要写接口
-        .then(data => {
-          console.log(data.data);
-          this.data = data.data; //这里是数据
-          this.setLoding(false);
+    //修改用户
+    submitForm() {
+      var params = new URLSearchParams();
+      params.append("id", this.userData.id);
+      params.append("name", this.userData.name);
+      params.append("email", this.userData.email);
+      params.append("phone", this.userData.phone);
+      params.append("jurisdiction", this.userData.jurisdiction);
+      console.log(this.userData.id);
+      this.$confirm("此操作将修改用户信息, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          apis.userApi
+            .updateUser(params)
+            .then(data => {
+              console.log(data.message);
+              if (data.status === "SUCCESS") {
+                this.$message({
+                  type: "success",
+                  message: "修改成功!"
+                });
+                this.fetchData();
+              } else {
+                this.$message({
+                  type: "info",
+                  message: "修改失败!"
+                });
+              }
+            })
+            .catch(error => {
+              this.loading = false;
+              this.dialogText = error.message;
+              this.dialogVisible = true;
+              console.log(error);
+              this.$message({
+                type: "info",
+                message: "修改失败"
+              });
+            });
         })
-        .catch(error => {
-          this.loading = false;
-          this.dialogText = error.message;
-          this.dialogVisible = true;
-          console.log(error);
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "修改取消"
+          });
         });
     },
     setLoding(bool) {
       this.loading = bool;
     },
-    createTimeFormat(row) {
-      return new Date(parseInt(row.creat_at)).toLocaleString();
+    changeTimeFormat(time) {
+      return new Date(parseInt(time)).toLocaleString();
     },
-    updateTimeFormat(row) {
-      return new Date(parseInt(row.update_at)).toLocaleString();
+    //一键激活
+    active() {
+      var params = new URLSearchParams();
+      params.append("email", this.userData.email);
+      params.append("activeCode", this.userData.activecode);
+      this.$confirm("此操作将一键激活该用户, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          apis.userApi
+            .active(params)
+            .then(data => {
+              console.log(data.message);
+              if (data.status === "Success") {
+                this.$message({
+                  type: "success",
+                  message: "激活成功!"
+                });
+                this.fetchData();
+              } else {
+                this.$message({
+                  type: "info",
+                  message: "激活失败!"
+                });
+              }
+            })
+            .catch(error => {
+              this.loading = false;
+              this.dialogText = error.message;
+              this.dialogVisible = true;
+              console.log(error);
+              this.$message({
+                type: "info",
+                message: "激活失败"
+              });
+            });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "激活取消"
+          });
+        });
     },
-    jurisdictionFormat(row) {
-      if (row.jurisdiction === 101) {
-        return "超级管理员";
-      } else if (row.jurisdiction === 102) {
-        return "学员";
-      } else if (row.jurisdiction === 103) {
-        return "教练";
-      } else {
-        return "未知";
-      }
-    },
-    deleteUser(val) {
-      console.log(val);
-      this.dialogText = val;
-      this.dialogVisible = true;
-      //这里写相应的逻辑，val是指传进来的参数也就是上面的scope.row.phone；也可以是scope.row.nickname等
-    },
-    //修改用户
-    modifyUser(val) {
-      this.dialogText = val;
-      this.dialogVisible = true;
+    //重置密码
+    resetUserPassword() {
+      let params = {
+        email: this.userData.email //当前页
+      };
+      this.$confirm("此操作将重置用户该密码, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          apis.userApi
+            .resetUserPassword(params) //在这里插入后端浏览列表
+            .then(data => {
+              console.log(data.message);
+              if (data.status === "SUCCESS") {
+                this.$message({
+                  type: "success",
+                  message: "重置成功!"
+                });
+              } else {
+                this.$message({
+                  type: "info",
+                  message: "重置失败!"
+                });
+              }
+            })
+            .catch(error => {
+              this.loading = false;
+              this.dialogText = error.message;
+              this.dialogVisible = true;
+              console.log(error);
+              this.$message({
+                type: "info",
+                message: "重置失败"
+              });
+            });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "重置取消"
+          });
+        });
     },
     jumpTo(url) {
       this.$router.push(url); //用go刷新

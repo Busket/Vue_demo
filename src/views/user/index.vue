@@ -257,7 +257,7 @@ export default {
       };
       //这里写相应的逻辑，val是指传进来的参数也就是上面的scope.row.phone；也可以是scope.row.nickname等
 
-      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+      this.$confirm("此操作将永久删除该用户, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
@@ -294,8 +294,9 @@ export default {
     },
     //修改用户
     modifyUser(val) {
-      this.dialogText = val;
-      this.dialogVisible = true;
+      // this.dialogText = val;
+      // this.dialogVisible = true;
+      console.log(val);
       this.$router.push({ path: "/userManager/detail", query: { email: val } }); //用go刷新
       // this.jumpTo({ name: "/userManager/detail", params: { email: val } });
     },
