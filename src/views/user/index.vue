@@ -21,9 +21,9 @@
               >查询</el-button
             >
           </el-form-item>
-          <el-form-item>
+          <el-form-item class="pull-right">
             <el-button type="primary" size="medium" v-on:click="creatUser()"
-              >添加用户</el-button
+              >+添加用户</el-button
             >
           </el-form-item>
         </el-form>
@@ -252,9 +252,9 @@ export default {
     },
     //删除用户
     deleteUser(val) {
-      // console.log(val);
-      // this.dialogText = val;
-      // this.dialogVisible = true;
+      let params = {
+        email: val //当前页
+      };
       //这里写相应的逻辑，val是指传进来的参数也就是上面的scope.row.phone；也可以是scope.row.nickname等
 
       this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
@@ -263,16 +263,32 @@ export default {
         type: "warning"
       })
         .then(() => {
-          //在这里接相关的后端操作
-          this.$message({
-            type: "success",
-            message: "删除成功!"
-          });
+          console.log(params);
+          apis.userApi
+            .deleteUser(params) //在这里插入后端浏览列表
+            .then(data => {
+              console.log(data.message);
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+              this.fetchData();
+            })
+            .catch(error => {
+              this.loading = false;
+              this.dialogText = error.message;
+              this.dialogVisible = true;
+              console.log(error);
+              this.$message({
+                type: "info",
+                message: "删除失败"
+              });
+            });
         })
         .catch(() => {
           this.$message({
             type: "info",
-            message: "删除失败"
+            message: "删除取消"
           });
         });
     },

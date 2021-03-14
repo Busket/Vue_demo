@@ -49,7 +49,8 @@ export const ISDEV = Env.isDev;
 
 //通用方法
 export const POST = (url, params) => {
-  return axios.post(`${base}${url}`, params).then(res => res.data);
+  // return axios.post(`${base}${url}`, params).then(res => res.data);
+  return axios.post(`${url}`, params ).then(res => res.data);
 };
 
 export const GET = (url, params) => {

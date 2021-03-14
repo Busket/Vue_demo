@@ -36,10 +36,14 @@
           width="268"
         >
           <template slot-scope="scope">
-            <el-button type="primary" @click="pathTo('Subject_2')"
+            <el-button
+              type="primary"
+              @click="pathTo('Subject_2', scope.row.date)"
               >科目二预约</el-button
             >
-            <el-button type="primary" @click="deleteUser(scope.row.email)"
+            <el-button
+              type="primary"
+              @click="pathTo('Subject_3', scope.row.date)"
               >科目三预约</el-button
             >
           </template>
@@ -77,11 +81,12 @@ export default {
       dialogText: "点击成功"
     };
   },
+
   methods: {
-    pathTo(subject) {
+    pathTo(subject, date) {
       this.$router.push({
         path: "/appointment/detail",
-        query: { subject: subject }
+        query: { subject: subject, date: date }
       }); //用go刷新
     }
   }

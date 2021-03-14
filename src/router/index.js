@@ -22,6 +22,8 @@ import UserDetail from "@/views/user/detail";
 import AddUser from "@/views/user/add";
 //车辆管理当中的东西
 import VehicleManage from "@/views/vehicle/index.vue";
+import VehicleDetail from "@/views/vehicle/detail";
+import VehicleAdd from "@/views/vehicle/add";
 //部门管理
 import leadership from "@/views/dept/leadership";
 import academicAffairsSection from "@/views/dept/academicAffairsSection";
@@ -76,7 +78,7 @@ const routes = [
       },
       {
         path: "/appointment/detail",
-        name: "科目二练车预约",
+        name: "练车预约",
         components: {
           default: AppointmentDetail,
           top: TopNav,
@@ -278,6 +280,30 @@ const routes = [
         leaf: true, // 只有一个节点
         iconCls: "iconfont icon-home", // 图标样式class
         menuShow: true
+      },
+      {
+        path: "/vehicle/add",
+        name: "车辆信息",
+        components: {
+          default: VehicleAdd,
+          top: TopNav,
+          aside: LeftNav
+        },
+        leaf: true, // 只有一个节点
+        iconCls: "iconfont icon-home", // 图标样式class
+        menuShow: false
+      },
+      {
+        path: "/vehicle/detail",
+        name: "车辆信息",
+        components: {
+          default: VehicleDetail,
+          top: TopNav,
+          aside: LeftNav
+        },
+        leaf: true, // 只有一个节点
+        iconCls: "iconfont icon-home", // 图标样式class
+        menuShow: false
       }
     ]
   },

@@ -137,9 +137,6 @@ export default {
                 var json = data.data;
                 console.log(json);
                 if (json.status === "Success") {
-                  // this.dialogText = json.message;
-                  // this.dialogVisible = true;
-                  //注册成功之后跳转回登录界面
                   this.pathTo("Login");
                   return;
                 } else if (json.message) {

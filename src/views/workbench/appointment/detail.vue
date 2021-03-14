@@ -1,32 +1,7 @@
 <template>
   <div class="warp-main">
     <el-row v-loading="loading" element-loading-text="拼命加载中">
-      <el-col :span="24" class="toolbar">
-        <el-form :inline="true" :model="filters">
-          <el-form-item>
-            <el-input
-              v-model="filters.keyword"
-              placeholder="请输入计划名称搜索"
-              auto-complete="off"
-              @keyup.enter.native="handleSearch"
-            ></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" size="medium" v-on:click="handleSearch"
-              >查询</el-button
-            >
-          </el-form-item>
-          <el-form-item class="pull-right">
-            <el-button
-              type="primary"
-              size="small"
-              icon="el-icon-plus"
-              @click="addPlan"
-              >添加行程</el-button
-            >
-          </el-form-item>
-        </el-form>
-      </el-col>
+      <el-page-header @back="goBack" props="subject"></el-page-header>
       <!--表格数据-->
       <el-col :span="24" class="table-wrapper">
         <el-table
@@ -39,13 +14,13 @@
             <template slot-scope="props">
               <el-form label-position="left" inline class="info-table-expand">
                 <el-form-item label="车牌号：">
-                  <span>{{ props.row.pNum }}</span>
+                  <span>{{ props.row.carNumber }}</span>
                 </el-form-item>
                 <el-form-item label="场地：">
-                  <span>{{ props.row.name }}</span>
+                  <span>{{ props.row.place }}</span>
                 </el-form-item>
                 <el-form-item label="教练：">
-                  <span>{{ props.row.content }}</span>
+                  <span>{{ props.row.coach }}</span>
                 </el-form-item>
                 <el-form-item label="开始时间：">
                   <span>{{ props.row.startTime }}</span>
@@ -59,9 +34,13 @@
               </el-form>
             </template>
           </el-table-column>
-          <el-table-column label="车牌号" prop="pNum"></el-table-column>
-          <el-table-column label="场地" prop="name"></el-table-column>
-          <el-table-column label="教练" prop="content"></el-table-column>
+          <el-table-column
+            label="车牌号"
+            prop="carNumber"
+            class="pull-left"
+          ></el-table-column>
+          <el-table-column label="场地" prop="place"></el-table-column>
+          <el-table-column label="教练" prop="coach"></el-table-column>
         </el-table>
       </el-col>
       <!--分页-->
@@ -102,50 +81,19 @@ export default {
       total: 5,
       currentPage: 1,
       pageSize: 10,
+      subject: "科目三",
       infoData: [
         {
-          id: 1,
-          pNum: "P0001",
-          name: "计划A",
-          content: "计划内容",
+          date: "2021-2-1",
+          week: "星期一",
+          total: 36,
+          Reserved: 12,
+          place: "狮岭校区",
+          coach: "小黑",
+          carNumber: "粤A12345",
+          content: "科目二练习",
           startTime: "2018-04-20 08:00:00",
           finishTime: "2018-04-20 09:00:00",
-          remark: "备注内容"
-        },
-        {
-          id: 2,
-          pNum: "P0002",
-          name: "计划B",
-          content: "计划内容",
-          startTime: "2018-04-19 08:00:00",
-          finishTime: "2018-04-19 12:00:00",
-          remark: "备注内容"
-        },
-        {
-          id: 3,
-          pNum: "P0003",
-          name: "计划C",
-          content: "计划内容",
-          startTime: "2018-04-18 08:00:00",
-          finishTime: "2018-04-18 09:00:00",
-          remark: "备注内容"
-        },
-        {
-          id: 4,
-          pNum: "P0004",
-          name: "计划D",
-          content: "计划内容",
-          startTime: "2018-04-17 08:00:00",
-          finishTime: "2018-04-17 11:00:00",
-          remark: "备注内容"
-        },
-        {
-          id: 5,
-          pNum: "P0005",
-          name: "计划E",
-          content: "计划内容",
-          startTime: "2018-04-16 08:00:00",
-          finishTime: "2018-04-16 23:00:00",
           remark: "备注内容"
         }
       ],
@@ -156,6 +104,13 @@ export default {
   },
   components: {
     "plan-detail": PlanDetail
+  },
+  created: function() {
+    // 组件创建完后获取数据，
+    // 此时 data 已经被 observed 了
+    this.subject = this.$route.query.subject; //将获取道德email发送给后端，让后端根据该邮箱查询用户所有信息
+    this.infoData.date = this.$route.query.date;
+    // this.fetchData(param); //调用接口获取动态数据
   },
   methods: {
     addPlan() {
@@ -180,6 +135,10 @@ export default {
     handleSearch() {
       // ...
     },
+    goBack() {
+      console.log("go back");
+      this.$router.go(-1);
+    }
     // // 选择每页显示条数
     // handleSizeChange(val) {
     //   //        this.pageSize = val;

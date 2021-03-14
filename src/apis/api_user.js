@@ -13,5 +13,11 @@ export default {
   },
   updateUser: params => {
     return API.GET(`/api/enterprise/list/${params}`);
+  },
+  addUser: params => {
+    return API.POST("/api/addUser/", params);
+  },
+  deleteUser: params => {
+    return API.GET("/api/deleteUser/", params);
   }
 };
