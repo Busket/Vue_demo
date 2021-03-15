@@ -189,11 +189,11 @@ export default {
       let params = {
         curr: this.currentPage, //当前页
         pageSize: this.pageSize, //每页的大小
-        keywords: this.filters.email //关键字？  filter-过滤
+        keywords: this.filters.carNumber //关键字？  filter-过滤
       };
       this.loading = true; //调出拼命加载中
 
-      apis.userApi
+      apis.vehicleApi
         .findList(params) //在这里插入后端浏览列表
         .then(data => {
           console.log(data.count);
