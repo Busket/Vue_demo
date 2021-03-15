@@ -4,7 +4,8 @@
     <el-form
       :label-position="labelPosition"
       label-width="80px"
-      :model="userData"
+      :model="carData"
+      :rules="rules"
       ref="ruleForm"
     >
       <el-row :gutter="60">
@@ -89,7 +90,7 @@
 
         <el-row :gutter="20">
           <el-col :span="2" :offset="3">
-            <el-button type="primary" @click="submitForm(userData)"
+            <el-button type="primary" @click="submitForm()"
               >添加</el-button
             >
           </el-col>
@@ -132,18 +133,18 @@ export default {
       currentPage: 1,
       pageSize: 10,
       carData: {
-        id: "1",
-        carNumber: "粤A123123",
-        brand: "大众",
+        id: "",
+        carNumber: "",
+        brand: "",
         status: "",
-        VIN: "123456789",
-        chargeMan: "",
-        creat_at: "2017-03-27",
-        update_at: "2017-03-27"
+        VIN: "",
+        chargeMan: ""
       },
-      multipleSelection: [],
-      filters: {
-        name: ""
+      // 表单验证，需要在 el-form-item 元素中增加 prop 属性
+      rules: {
+        brand: [{ required: true, message: "品牌不可为空", trigger: "blur" }],
+        status: [{ required: true, message: "状态不可为空", trigger: "blur" }],
+        VIN: [{ required: true, message: "车架号不可为空", trigger: "blur" }]
       },
       options: [
         {
@@ -169,86 +170,52 @@ export default {
         {
           value: 222,
           label: "其他"
+        },
+        {
+          value: 110,
+          label: "停用"
         }
       ],
       chargeMen: [
         //这里的内容需要后端获取教练科的员工数据
         {
-          email: "234@qq.com",
-          name: "小王"
-        },
-        {
-          email: "1234@qq.com",
-          name: "小黑"
-        },
-        {
-          email: "2334@qq.com",
-          name: "小张"
-        },
-        {
-          email: "2344@qq.com",
-          name: "小李"
-        },
-        {
-          email: "2354@qq.com",
-          name: "小飞"
-        },
-        {
-          email: "236@qq.com",
-          name: "小刘"
+          id: 23,
+          name: "小黑",
+          email: "948320166@qq.com"
         }
       ]
     };
   },
   methods: {
-    submitForm(userData) {
-      apis.userApi
-        .updateUser(userData) //还需要写接口
+    submitForm() {
+      var params = new URLSearchParams();
+      params.append("CarNumber", this.carData.carNumber);
+      params.append("Brand", this.carData.brand);
+      params.append("Status", this.carData.status);
+      params.append("ChargeMan", this.carData.chargeMan);
+      params.append("VIN", this.carData.VIN);
+      apis.vehicleApi
+        .addCar(params) //还需要写接口
         .then(data => {
-          console.log(data.data);
-          this.data = data.data; //这里是数据
+          console.log(data.status);
+          this.$message({
+            type: "success",
+            message: "添加成功!"
+          });
+          this.goBack();
           this.setLoding(false);
         })
         .catch(error => {
           this.loading = false;
-          this.dialogText = error.message;
-          this.dialogVisible = true;
+          this.$message({
+            type: "info",
+            message: "添加失败!"
+          });
           console.log(error);
         });
     },
     setLoding(bool) {
       this.loading = bool;
-    },
-    createTimeFormat(row) {
-      return new Date(parseInt(row.creat_at)).toLocaleString();
-    },
-    updateTimeFormat(row) {
-      return new Date(parseInt(row.update_at)).toLocaleString();
-    },
-    statusFormat(row) {
-      if (row.jurisdiction === 101) {
-        return "超级管理员";
-      } else if (row.jurisdiction === 102) {
-        return "学员";
-      } else if (row.jurisdiction === 103) {
-        return "教练";
-      } else {
-        return "未知";
-      }
-    },
-    deleteUser(val) {
-      console.log(val);
-      this.dialogText = val;
-      this.dialogVisible = true;
-      //这里写相应的逻辑，val是指传进来的参数也就是上面的scope.row.phone；也可以是scope.row.nickname等
-    },
-    //修改用户
-    modifyUser(val) {
-      this.dialogText = val;
-      this.dialogVisible = true;
-    },
-    jumpTo(url) {
-      this.$router.push(url); //用go刷新
     },
     goBack() {
       this.$router.go(-1);

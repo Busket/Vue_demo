@@ -35,18 +35,12 @@
         style="width: 100%"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column type="selection" width="60"></el-table-column>
         <el-table-column
           prop="id"
           label="车辆编号"
           width="120"
-          sortable
         ></el-table-column>
-        <el-table-column
-          prop="carNumber"
-          label="车牌号码"
-          show-overflow-tooltip
-        ></el-table-column>
+        <el-table-column prop="carNumber" label="车牌号码"></el-table-column>
         <el-table-column
           prop="brand"
           label="品牌"
@@ -64,7 +58,7 @@
           :formatter="statusFormat"
         ></el-table-column>
         <el-table-column
-          prop="creat_at"
+          prop="create_at"
           label="创建日期"
           width="180"
           :formatter="createTimeFormat"
@@ -89,10 +83,10 @@
           width="268"
         >
           <template slot-scope="scope">
-            <el-button type="warning" @click="modifyCar(scope.row.email)"
+            <el-button type="warning" @click="modifyCar(scope.row.id)"
               >修改</el-button
             >
-            <el-button type="danger" @click="deleteCar(scope.row.email)"
+            <el-button type="danger" @click="deleteCar(scope.row.id)"
               >删除</el-button
             >
           </template>
@@ -151,7 +145,7 @@ export default {
           brand: "大众",
           status: 123,
           chargeMan: "小王",
-          creat_at: "2017-03-27"
+          create_at: "2017-03-27"
         },
         {
           id: "2",
@@ -159,7 +153,7 @@ export default {
           brand: "宝马",
           status: 123,
           chargeMan: "小黑",
-          creat_at: "2017-03-27"
+          create_at: "2017-03-27"
         }
       ],
       multipleSelection: [],
@@ -229,42 +223,69 @@ export default {
       this.loading = bool;
     },
     createTimeFormat(row) {
-      return new Date(parseInt(row.creat_at)).toLocaleString();
+      return new Date(parseInt(row.create_at)).toLocaleString();
     },
     updateTimeFormat(row) {
       return new Date(parseInt(row.update_at)).toLocaleString();
     },
     statusFormat(row) {
-      if (row.status === 123) {
-        return "正常";
-      } else if (row.status === 102) {
-        return "学员";
-      } else if (row.status === 103) {
-        return "教练";
-      } else if (row.status === 104) {
-        return "行政";
+      if (row.status === 112) {
+        return "科目二教练车";
+      } else if (row.status === 113) {
+        return "科目三教练车";
+      } else if (row.status === 114) {
+        return "接送车";
+      } else if (row.status === 110) {
+        return "停用";
+      } else if (row.status === 119) {
+        return "待修";
+      } else if (row.status === 100) {
+        return "外用（出借）";
+      } else if (row.status === 222) {
+        return "其他";
       } else {
         return "未知";
       }
     },
     //删除用户
     deleteCar(val) {
-      // console.log(val);
-      // this.dialogText = val;
-      // this.dialogVisible = true;
-      //这里写相应的逻辑，val是指传进来的参数也就是上面的scope.row.phone；也可以是scope.row.nickname等
-
+      let params = {
+        id: val //将id传给后端，进行删除
+      };
       this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(() => {
-          //在这里接相关的后端操作
-          this.$message({
-            type: "success",
-            message: "删除成功!"
-          });
+          console.log(params);
+          apis.vehicleApi
+            .deleteCar(params) //在这里插入后端浏览列表
+            .then(data => {
+              console.log(data.message);
+              if (data.message === "Success") {
+                this.$message({
+                  type: "success",
+                  message: "删除成功!"
+                });
+                this.fetchData();
+              } else {
+                this.$message({
+                  type: "info",
+                  message: "删除失败!"
+                });
+              }
+            })
+            .catch(error => {
+              this.loading = false;
+              this.dialogText = error.message;
+              this.dialogVisible = true;
+              console.log(error);
+              this.$message({
+                type: "info",
+                message: "删除失败"
+              });
+            });
         })
         .catch(() => {
           this.$message({
@@ -275,7 +296,7 @@ export default {
     },
     //修改用户
     modifyCar(val) {
-      this.$router.push({ path: "/vehicle/detail", query: { carNumber: val } }); //用go刷新
+      this.$router.push({ path: "/vehicle/detail", query: { id: val } }); //用go刷新
     },
     creatCar() {
       this.$router.push("/vehicle/add"); //用go刷新
