@@ -1,8 +1,9 @@
 import shiroApi from "./shiroApi";
 import registerApi from "@/apis/registerApi";
 import forgetPasswordApi from "@/apis/forgetPasswordApi";
-import userApi from "@/apis/api_user"
-import vehicleApi from "@/apis/api_vehicle"
+import userApi from "@/apis/api_user";
+import vehicleApi from "@/apis/api_vehicle";
+import deptApi from "@/apis/api_department";
 /**
  * 接口汇总
  */
@@ -18,5 +19,7 @@ export default {
   /**用户接口 **/
   userApi: userApi,
   /**车辆接口 */
-  vehicleApi: vehicleApi
+  vehicleApi: vehicleApi,
+  /**部门接口 */
+  deptApi: deptApi
 };

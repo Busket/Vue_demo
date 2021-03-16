@@ -1,3 +1,4 @@
+<!--教务科-->
 <template>
   <div class="warp-main">
     <el-row :span="24" v-loading="loading" element-loading-text="拼命加载中">
@@ -11,7 +12,7 @@
           <el-form-item>
             <el-input
               v-model="tableData.name"
-              placeholder="请输入用户名称"
+              placeholder="请输入同事名称"
               auto-complete="off"
               @keyup.enter.native="fetchData"
             ></el-input>

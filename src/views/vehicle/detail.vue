@@ -263,28 +263,6 @@ export default {
     TimeFormat(row) {
       return new Date(parseInt(row)).toLocaleString();
     },
-    jurisdictionFormat(row) {
-      if (row.jurisdiction === 101) {
-        return "超级管理员";
-      } else if (row.jurisdiction === 102) {
-        return "学员";
-      } else if (row.jurisdiction === 103) {
-        return "教练";
-      } else {
-        return "未知";
-      }
-    },
-    deleteUser(val) {
-      console.log(val);
-      this.dialogText = val;
-      this.dialogVisible = true;
-      //这里写相应的逻辑，val是指传进来的参数也就是上面的scope.row.phone；也可以是scope.row.nickname等
-    },
-    //修改用户
-    modifyUser(val) {
-      this.dialogText = val;
-      this.dialogVisible = true;
-    },
     jumpTo(url) {
       this.$router.push(url); //用go刷新
     },

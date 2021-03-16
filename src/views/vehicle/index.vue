@@ -163,8 +163,6 @@ export default {
     };
   },
   created: function() {
-    // 组件创建完后获取数据，
-    // 此时 data 已经被 observed 了
     this.fetchData(); //调用接口获取动态数据
   },
   methods: {
