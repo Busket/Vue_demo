@@ -9,7 +9,7 @@
       <el-row :gutter="60">
         <el-col :span="10">
           <el-form-item label="工号" prop="dept_no" width="60">
-            <el-input v-model="staffData.dept_no" :disable="true"></el-input>
+            <el-input v-model="staffData.dept_no" :disabled="true"></el-input>
           </el-form-item>
         </el-col>
 
@@ -47,7 +47,7 @@
       <el-row :gutter="60">
         <el-col :span="10">
           <el-form-item label="部门" prop="department">
-            <el-input v-model="this.showDept"></el-input>
+            <el-input v-model="this.showDept" :disabled="true"></el-input>
             <!--            <el-select-->
             <!--              v-model="staffData.department"-->
             <!--              placeholder="请选择"-->
@@ -75,16 +75,24 @@
             <el-input v-model="staffData.update_at" :disabled="true"></el-input>
           </el-form-item>
         </el-col>
-
-        <el-row :gutter="100">
-          <el-col :span="10">
-            <el-form-item label="创建时间" prop="create_at">
-              <el-input
-                v-model="staffData.create_at"
-                :disabled="true"
-              ></el-input> </el-form-item
-          ></el-col>
-
+        <el-col :span="10">
+          <el-form-item label="年龄" prop="age">
+            <el-input
+              v-model="staffData.age"
+              @input="staffData.age = staffData.age.replace(/[^\d]/g, '')"
+            ></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="10">
+          <el-form-item label="创建时间" prop="create_at">
+            <el-input
+              v-model="staffData.create_at"
+              :disabled="true"
+            ></el-input> </el-form-item
+        ></el-col>
+        <el-row :gutter="20">
           <el-col :span="2" :offset="3">
             <el-button type="primary" @click="submitForm()">修改</el-button>
           </el-col>
@@ -129,11 +137,12 @@ export default {
         name: "",
         email: "",
         phone: "",
+        age: "",
         address: "",
         id_no: "",
         department: "",
         position: "",
-        creat_at: "",
+        create_at: "",
         update_at: ""
       },
       filters: {
@@ -145,7 +154,7 @@ export default {
   created: function() {
     // 组件创建完后获取数据，
     // 此时 data 已经被 observed 了
-    this.staffData.id = this.$route.query.department;
+    this.staffData.id = this.$route.query.id;
     this.staffData.department = this.$route.query.department; //将获取道德email发送给后端，让后端根据该邮箱查询用户所有信息
     this.fetchData(); //调用接口获取动态数据
   },
@@ -157,14 +166,22 @@ export default {
         department: this.staffData.department
       };
       this.loading = true; //调出拼命加载中
+      console.log(this.staffData.department);
+      console.log(this.staffData.id);
       apis.deptApi
         .findStaffById(params)
         .then(data => {
           if (data.status === "SUCCESS") {
             console.log(data.staffInfo);
             this.staffData = data.staffInfo; //这里是数据
-            this.staffData.create_at = this.TimeFormat(this.staffData.create_at); //修改时间显示格式
-            this.staffData.update_at = this.TimeFormat(this.staffData.update_at);
+            this.staffData.create_at = this.TimeFormat(
+              this.staffData.create_at
+            ); //修改时间显示格式
+            this.staffData.update_at = this.TimeFormat(
+              this.staffData.update_at
+            );
+            console.log(this.staffData.department);
+            this.transform(); //更改部门显示数据
             console.log("数据拉取完成！");
             this.setLoding(false);
           }
@@ -178,14 +195,16 @@ export default {
     },
     submitForm() {
       var params = new URLSearchParams();
+      params.append("id", this.staffData.id);
       params.append("name", this.staffData.name);
       params.append("email", this.staffData.email);
       params.append("phone", this.staffData.phone);
+      params.append("age", this.staffData.age);
       params.append("address", this.staffData.address);
       params.append("department", this.staffData.department);
       params.append("id_no", this.staffData.id_no);
       params.append("position", this.staffData.position);
-      this.$confirm("此操作将修改车辆信息, 是否继续?", "提示", {
+      this.$confirm("此操作将修改员工信息, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
@@ -234,35 +253,35 @@ export default {
     },
     transform() {
       switch (this.staffData.department) {
-        case "211": {
+        case 211: {
           this.showDept = "办公室";
           break;
         }
-        case "212": {
+        case 212: {
           this.showDept = "信息中心";
           break;
         }
-        case "213": {
+        case 213: {
           this.showDept = "教练科";
           break;
         }
-        case "214": {
+        case 214: {
           this.showDept = "教务科";
           break;
         }
-        case "215": {
+        case 215: {
           this.showDept = "业务科";
           break;
         }
-        case "216": {
+        case 216: {
           this.showDept = "财务科";
           break;
         }
-        case "217": {
+        case 217: {
           this.showDept = "总务科";
           break;
         }
-        case "218": {
+        case 218: {
           this.showDept = "领导层";
           break;
         }

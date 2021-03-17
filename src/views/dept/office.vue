@@ -59,7 +59,7 @@
           <template slot-scope="scope">
             <el-button
               type="warning"
-              @click="modifyStaff(scope.row.email)"
+              @click="modifyStaff(scope.row.id)"
               >修改</el-button
             >
             <el-button

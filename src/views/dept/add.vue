@@ -52,10 +52,7 @@
       <el-row :gutter="60">
         <el-col :span="10">
           <el-form-item label="部门" prop="department">
-            <el-input
-              v-model="this.showDept"
-              :disabled="true"
-            ></el-input>
+            <el-input v-model="this.showDept" :disabled="true"></el-input>
             <!--            <el-select v-model="staffData.department" placeholder="请选择" disable="true">-->
             <!--            <el-option-->
             <!--              v-for="item in dept"-->
@@ -74,14 +71,15 @@
         ></el-col>
       </el-row>
       <el-row :gutter="60">
-        <!--        <el-col :span="10">-->
-        <!--          <el-form-item label="激活时间" prop="email_verified_at">-->
-        <!--            <el-input-->
-        <!--              v-model="userData.email_verified_at"-->
-        <!--              :disabled="true"-->
-        <!--            ></el-input> </el-form-item-->
-        <!--        ></el-col>-->
-
+        <el-col :span="10">
+          <el-form-item label="年龄" prop="age">
+            <el-input
+              v-model="staffData.age"
+              @input="staffData.age = staffData.age.replace(/[^\d]/g, '')"
+            ></el-input> </el-form-item
+        ></el-col>
+      </el-row>
+      <el-row :gutter="60">
         <el-row :gutter="100">
           <el-col :span="2" :offset="3">
             <el-button type="primary" @click="submitForm()">添加</el-button>
@@ -129,6 +127,7 @@ export default {
         phone: "",
         address: "",
         id_no: "",
+        age: "",
         department: "",
         position: "",
         creat_at: "",
@@ -144,6 +143,8 @@ export default {
     // 组件创建完后获取数据，
     // 此时 data 已经被 observed 了
     this.staffData.department = this.$route.query.department; //将获取道德email发送给后端，让后端根据该邮箱查询用户所有信息
+    console.log(this.staffData.department);
+    this.transform();
   },
   methods: {
     submitForm() {
@@ -151,6 +152,7 @@ export default {
       params.append("dept_no", this.staffData.dept_no);
       params.append("name", this.staffData.name);
       params.append("email", this.staffData.email);
+      params.append("age", this.staffData.age);
       params.append("phone", this.staffData.phone);
       params.append("address", this.staffData.address);
       params.append("id_no", this.staffData.id_no);
@@ -221,7 +223,7 @@ export default {
           this.showDept = "领导层";
           break;
         }
-        default:{
+        default: {
           this.showDept = "未知";
           break;
         }

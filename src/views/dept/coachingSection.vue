@@ -10,7 +10,7 @@
         <el-form :inline="true" :model="tableData">
           <el-form-item>
             <el-input
-              v-model="tableData.name"
+              v-model="filter.name"
               placeholder="请输入用户名称"
               auto-complete="off"
               @keyup.enter.native="fetchData"
@@ -21,9 +21,9 @@
             >查询</el-button
             >
           </el-form-item>
-          <el-form-item>
+          <el-form-item class="pull-right">
             <el-button type="primary" size="medium" v-on:click="creatStaff()"
-            >添加用户</el-button
+            >+添加员工</el-button
             >
           </el-form-item>
         </el-form>
@@ -57,10 +57,14 @@
           width="268"
         >
           <template slot-scope="scope">
-            <el-button type="warning" @click="modifyStaff(scope.row.email)"
+            <el-button
+              type="warning"
+              @click="modifyStaff(scope.row.id)"
             >修改</el-button
             >
-            <el-button type="danger" @click="deleteStaff(scope.row.email)"
+            <el-button
+              type="danger"
+              @click="deleteStaff(scope.row.id)"
             >删除</el-button
             >
           </template>
@@ -91,7 +95,7 @@ export default {
   data() {
     return {
       loading: false,
-      total: 12,
+      total: "",
       currentPage: 1,
       pageSize: 10,
       tableData: [
@@ -114,108 +118,11 @@ export default {
           address: "上海市普陀区金沙江路 1518 弄",
           id_no: "4401123123123",
           position: "总裁"
-        },
-        {
-          dept_no: "123",
-          name: "小黑",
-          age: 23,
-          email: "123@qq.com",
-          phone: "123",
-          address: "上海市普陀区金沙江路 1518 弄",
-          id_no: "4401123123123",
-          position: "总裁"
-        },
-        {
-          dept_no: "123",
-          name: "小黑",
-          age: 23,
-          email: "123@qq.com",
-          phone: "123",
-          address: "上海市普陀区金沙江路 1518 弄",
-          id_no: "4401123123123",
-          position: "总裁"
-        },
-        {
-          dept_no: "123",
-          name: "小黑",
-          age: 23,
-          email: "123@qq.com",
-          phone: "123",
-          address: "上海市普陀区金沙江路 1518 弄",
-          id_no: "4401123123123",
-          position: "总裁"
-        },
-        {
-          dept_no: "123",
-          name: "小黑",
-          age: 23,
-          email: "123@qq.com",
-          phone: "123",
-          address: "上海市普陀区金沙江路 1518 弄",
-          id_no: "4401123123123",
-          position: "总裁"
-        },
-        {
-          dept_no: "123",
-          name: "小黑",
-          age: 23,
-          email: "123@qq.com",
-          phone: "123",
-          address: "上海市普陀区金沙江路 1518 弄",
-          id_no: "4401123123123",
-          position: "总裁"
-        },
-        {
-          dept_no: "123",
-          name: "小黑",
-          age: 23,
-          email: "123@qq.com",
-          phone: "123",
-          address: "上海市普陀区金沙江路 1518 弄",
-          id_no: "4401123123123",
-          position: "总裁"
-        },
-        {
-          dept_no: "123",
-          name: "小黑",
-          age: 23,
-          email: "123@qq.com",
-          phone: "123",
-          address: "上海市普陀区金沙江路 1518 弄",
-          id_no: "4401123123123",
-          position: "总裁"
-        },
-        {
-          dept_no: "123",
-          name: "小黑",
-          age: 23,
-          email: "123@qq.com",
-          phone: "123",
-          address: "上海市普陀区金沙江路 1518 弄",
-          id_no: "4401123123123",
-          position: "总裁"
-        },
-        {
-          dept_no: "123",
-          name: "小黑",
-          age: 23,
-          email: "123@qq.com",
-          phone: "123",
-          address: "上海市普陀区金沙江路 1518 弄",
-          id_no: "4401123123123",
-          position: "总裁"
-        },
-        {
-          dept_no: "123",
-          name: "小黑",
-          age: 23,
-          email: "123@qq.com",
-          phone: "123",
-          address: "上海市普陀区金沙江路 1518 弄",
-          id_no: "4401123123123",
-          position: "总裁"
         }
-      ]
+      ],
+      filter: {
+        name: ""
+      }
     };
   },
   created: function() {
@@ -229,11 +136,13 @@ export default {
       let params = {
         curr: this.currentPage, //当前页
         pageSize: this.pageSize, //每页的大小
-        keywords: this.filters.name //关键字？  filter-过滤
+        keywords: this.filter.name, //关键字？  filter-过滤
+        department: 213
       };
+      console.log("开始向后端发送请求");
       this.loading = true; //调出拼命加载中
-      apis.userApi
-        .findList(params) //在这里插入后端浏览列表
+      apis.deptApi
+        .findStaffList(params) //在这里插入后端浏览列表
         .then(data => {
           console.log(data.count);
           console.log(data.curr);
@@ -261,26 +170,52 @@ export default {
       this.fetchData();
       //        console.log(`当前页: ${val}`);
     },
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+    },
     setLoding(bool) {
       this.loading = bool;
     },
-    //删除员工,同时询问是否删除用户？
-    deleteStaff(val) {
-      // console.log(val);
-      // this.dialogText = val;
-      // this.dialogVisible = true;
-      //这里写相应的逻辑，val是指传进来的参数也就是上面的scope.row.phone；也可以是scope.row.nickname等
+    //删除员工
+    deleteStaff(id) {
+      let params = {
+        id: id, //将id传给后端，进行删除
+        department: 213
+      };
       this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(() => {
-          //在这里接相关的后端操作
-          this.$message({
-            type: "success",
-            message: "删除成功!"
-          });
+          console.log(params);
+          apis.deptApi
+            .deleteStaff(params) //在这里插入后端浏览列表
+            .then(data => {
+              console.log(data.message);
+              if (data.message === "Success") {
+                this.$message({
+                  type: "success",
+                  message: "删除成功!"
+                });
+                this.fetchData();
+              } else {
+                this.$message({
+                  type: "info",
+                  message: "删除失败!"
+                });
+              }
+            })
+            .catch(error => {
+              this.loading = false;
+              this.dialogText = error.message;
+              this.dialogVisible = true;
+              console.log(error);
+              this.$message({
+                type: "info",
+                message: "删除失败"
+              });
+            });
         })
         .catch(() => {
           this.$message({
@@ -289,17 +224,18 @@ export default {
           });
         });
     },
-    //修改用户
+    //修改员工
     modifyStaff(val) {
-      this.dialogText = val;
-      this.dialogVisible = true;
-      this.$router.push({ path: "/dept/detail", query: { email: val } }); //用go刷新
+      this.$router.push({
+        path: "/dept/detail",
+        query: { id: val, department: 213 }
+      }); //用go刷新
     },
+    //添加员工
     creatStaff() {
-      this.$router.push("/dept/add"); //用go刷新
+      this.$router.push({ path: "/dept/add", query: { department: 213 } }); //用go刷新
     }
   }
 };
 </script>
-
-<style scoped></style>
+<style></style>
