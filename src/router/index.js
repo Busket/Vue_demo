@@ -8,14 +8,12 @@ import Dashboard from "@/views/workbench/dashboard.vue";
 import MySettings from "@/views/workbench/mySettings.vue";
 import Plan from "@/views/workbench/plan/plan.vue";
 import Mission from "@/views/workbench/mission/mission.vue";
-import Maillist from "@/views/workbench/maillist.vue";
 import Appointment from "@/views/workbench/appointment/index";
 import AppointmentDetail from "@/views/workbench/appointment/detail";
-//企业管理当中的东西
-// import EnterpriseList from "@/views/enterprise/index.vue";
-// import EnterpriseAdd from "@/views/enterprise/add.vue";
-// import EnterpriseDetail from "@/views/enterprise/detail.vue";
-// import EnterpriseValidate from "@/views/enterprise/validate.vue";
+//学生管理当中的东西
+import StudentList from "@/views/student/index";
+import StudentDetail from "@/views/student/detail";
+import AddStudent from "@/views/student/add";
 //用户管理当中的东西
 import UserList from "@/views/user/index";
 import UserDetail from "@/views/user/detail";
@@ -36,15 +34,9 @@ import office from "@/views/dept/office";
 import AddStaff from "@/views/dept/add";
 import StaffDetail from "@/views/dept/detail";
 
-
 Vue.use(VueRouter);
 
 const routes = [
-  // {
-  //   path: "/",
-  //   name: "Home",
-  //   component: Home
-  // },
   {
     path: "/",
     type: "Home",
@@ -102,7 +94,7 @@ const routes = [
           {
             path: "/mySet/plan",
             component: Plan,
-            name: "行程计划",
+            name: "练车计划",
             menuShow: true
           },
           {
@@ -110,13 +102,13 @@ const routes = [
             component: Mission,
             name: "任务",
             menuShow: true
-          },
-          {
-            path: "/mySet/maillist",
-            component: Maillist,
-            name: "通讯录",
-            menuShow: true
           }
+          // ,{
+          //   path: "/mySet/maillist",
+          //   component: Maillist,
+          //   name: "通讯录",
+          //   menuShow: true
+          // }
         ]
       }
     ]
@@ -203,64 +195,6 @@ const routes = [
       // }
     ]
   },
-  // {
-  //   path: "/enterpriseManager",
-  //   type: "enterprise",
-  //   name: "enterprise",
-  //   component: Home,
-  //   redirect: "/enterprise/list",
-  //   menuShow: true,
-  //   children: [
-  //     {
-  //       path: "/enterprise/list",
-  //       name: "企业信息",
-  //       components: {
-  //         default: EnterpriseList,
-  //         top: TopNav,
-  //         aside: LeftNav
-  //       },
-  //       leaf: true,
-  //       iconCls: "el-icon-setting",
-  //       menuShow: true
-  //     },
-  //     {
-  //       path: "/enterprise/detail",
-  //       name: "企业详情",
-  //       components: {
-  //         default: EnterpriseDetail,
-  //         top: TopNav,
-  //         aside: LeftNav
-  //       },
-  //       leaf: true,
-  //       iconCls: "el-icon-setting",
-  //       menuShow: false
-  //     },
-  //     {
-  //       path: "/enterprise/add",
-  //       name: "添加企业",
-  //       components: {
-  //         default: EnterpriseAdd,
-  //         top: TopNav,
-  //         aside: LeftNav
-  //       },
-  //       leaf: true,
-  //       iconCls: "el-icon-menu",
-  //       menuShow: true
-  //     },
-  //     {
-  //       path: "/enterprise/validate",
-  //       name: "企业认证",
-  //       components: {
-  //         default: EnterpriseValidate,
-  //         top: TopNav,
-  //         aside: LeftNav
-  //       },
-  //       leaf: true,
-  //       iconCls: "el-icon-menu",
-  //       menuShow: true
-  //     }
-  //   ]
-  // },
   {
     path: "/vehicleManager",
     type: "enterprise",
@@ -445,6 +379,52 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/About.vue")
+  },
+  {
+    path: "/studentManager",
+    type: "studentManager",
+    name: "studentManager",
+    component: Home,
+    redirect: "/studentManager/list",
+    menuShow: true,
+    children: [
+      {
+        path: "/studentManager/list",
+        name: "学生浏览",
+        components: {
+          default: StudentList,
+          top: TopNav,
+          aside: LeftNav
+        },
+        leaf: true,
+        iconCls: "el-icon-setting",
+        menuShow: true
+      },
+      {
+        path: "/studentManager/detail",
+        name: "学生详情",
+        components: {
+          default: StudentDetail,
+          top: TopNav,
+          aside: LeftNav
+        },
+        leaf: true,
+        iconCls: "el-icon-setting",
+        menuShow: false
+      },
+      {
+        path: "/studentManager/add",
+        name: "添加学生",
+        components: {
+          default: AddStudent,
+          top: TopNav,
+          aside: LeftNav
+        },
+        leaf: true,
+        iconCls: "el-icon-setting",
+        menuShow: false
+      }
+    ]
   },
   {
     path: "/loginPage",

@@ -27,10 +27,10 @@
             <!--            <el-input v-model="carData.chargeMan"></el-input> -->
             <el-select v-model="carData.chargeMan" placeholder="请选择">
               <el-option
-                v-for="item in chargeMen"
-                :key="item.email"
+                v-for="item in chargeMens"
+                :key="item.dept_no"
                 :label="item.name"
-                :value="item.email"
+                :value="item.dept_no"
               >
               </el-option>
             </el-select>
@@ -90,9 +90,7 @@
 
         <el-row :gutter="20">
           <el-col :span="2" :offset="3">
-            <el-button type="primary" @click="submitForm()"
-              >添加</el-button
-            >
+            <el-button type="primary" @click="submitForm()">添加</el-button>
           </el-col>
 
           <el-col :span="3">
@@ -127,7 +125,6 @@ export default {
       labelPosition: "right",
       dialogText: "温馨提示",
       dialogVisible: false,
-      loading: false,
       keyword: "用户",
       total: 5,
       currentPage: 1,
@@ -176,15 +173,19 @@ export default {
           label: "停用"
         }
       ],
-      chargeMen: [
+      chargeMens: [
         //这里的内容需要后端获取教练科的员工数据
         {
-          id: 23,
-          name: "小黑",
-          email: "948320166@qq.com"
+          dept_no: "JLK001",
+          name: "小黑"
         }
       ]
     };
+  },
+  created: function() {
+    // 组件创建完后获取数据，
+    // 此时 data 已经被 observed 了
+    this.getCoach(); //调用接口获取动态数据
   },
   methods: {
     submitForm() {
@@ -214,8 +215,20 @@ export default {
           console.log(error);
         });
     },
-    setLoding(bool) {
-      this.loading = bool;
+    getCoach() {
+      apis.deptApi
+        .getCoach() //在这里插入后端浏览列表
+        .then(data => {
+          if (data.status === "SUCCESS") {
+            this.chargeMens = data.staffInfo; //获取教练列表
+          }
+        })
+        .catch(error => {
+          this.loading = false;
+          this.dialogText = error.message;
+          this.dialogVisible = true;
+          console.log(error);
+        });
     },
     goBack() {
       this.$router.go(-1);

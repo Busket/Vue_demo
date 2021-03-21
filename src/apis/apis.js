@@ -4,6 +4,8 @@ import forgetPasswordApi from "@/apis/forgetPasswordApi";
 import userApi from "@/apis/api_user";
 import vehicleApi from "@/apis/api_vehicle";
 import deptApi from "@/apis/api_department";
+import studentApi from "@/apis/api_student";
+
 /**
  * 接口汇总
  */
@@ -21,5 +23,7 @@ export default {
   /**车辆接口 */
   vehicleApi: vehicleApi,
   /**部门接口 */
-  deptApi: deptApi
+  deptApi: deptApi,
+  /**学生接口 */
+  studentApi: studentApi
 };

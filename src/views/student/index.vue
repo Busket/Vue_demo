@@ -5,14 +5,14 @@
         <el-form :inline="true" :model="filters">
           <el-form-item>
             <el-input
-              v-model="filters.number"
-              placeholder="请输入任务编号"
+              v-model="filters.name"
+              placeholder="请输入学生姓名"
               auto-complete="off"
-              @keyup.enter.native="handleSearch"
+              @keyup.enter.native="fetchData"
             ></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="medium" v-on:click="handleSearch"
+            <el-button type="primary" size="medium" v-on:click="fetchData"
               >查询</el-button
             >
           </el-form-item>
@@ -30,44 +30,26 @@
       <!--表格数据-->
       <el-col class="table-wrapper">
         <el-table
-          :data="tableData"
+          :data="studentData"
           stripe
           style="width: 100%"
-          @row-click="handleDetail"
         >
+          <el-table-column prop="number" label="学生编号"></el-table-column>
+          <el-table-column prop="name" label="姓名"></el-table-column>
+          <el-table-column prop="phone" label="联系方式"></el-table-column>
+          <el-table-column prop="payment" label="缴费情况"></el-table-column>
+          <el-table-column prop="status" label="练车状态"></el-table-column>
           <el-table-column
-            prop="mId"
-            v-if="idShow"
-            label="任务ID"
-          ></el-table-column>
-          <el-table-column
-            prop="mNumber"
-            label="任务编号"
-            sortable
-          ></el-table-column>
-          <el-table-column prop="mType" label="任务类型"></el-table-column>
-          <el-table-column prop="mContent" label="任务内容"></el-table-column>
-          <el-table-column
-            prop="eRemark"
-            label="任务备注"
+            prop="coach"
+            label="教练工号"
             show-overflow-tooltip
-          ></el-table-column>
-          <el-table-column
-            prop="createTime"
-            :formatter="dateFormatter"
-            label="创建日期"
-          ></el-table-column>
-          <el-table-column
-            prop="activeTime"
-            :formatter="activeTateFormatter"
-            label="执行日期"
           ></el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
-              <el-button
-                size="mini"
-                type="text"
-                @click="handleDelete(scope.$index, scope.row)"
+              <el-button type="warning" @click="modifyStudent(scope.row.id)"
+                >修改</el-button
+              >
+              <el-button type="danger" @click="deleteStudent(scope.row.id)"
                 >删除</el-button
               >
             </template>
@@ -90,50 +72,60 @@
     </el-row>
 
     <!--添加-->
-    <mission-add
-      ref="addMission"
+    <student-add
+      ref="addStudent"
       v-if="addVisible"
       :visible.sync="addVisible"
-    ></mission-add>
+    ></student-add>
     <!--详情-->
     <div class="modal-mask" v-if="maskVisible" @click="cancelVisible"></div>
     <transition name="slide-fade">
       <div class="detail-box" v-if="detailVisible">
-        <mission-detail ref="detailMission" :id="detailId"></mission-detail>
+        <!--        <mission-detail ref="detailMission" :id="detailId"></mission-detail>-->
       </div>
     </transition>
   </div>
 </template>
 <script>
-import MissionAdd from "./add";
-import MissionDetail from "./detail";
+import StudnetAdd from "./add";
+import apis from "@/apis/apis";
 export default {
-  name: "mission",
   data: function() {
     return {
       loading: false,
-      idShow: false,
       total: 2,
       currentPage: 1,
       pageSize: 10,
-      tableData: [
+      studentData: [
         {
-          mId: 1,
-          mNumber: "10001",
-          mType: "接收订单",
-          mContent: "接乘客",
-          eRemark: "无",
-          createTime: 1540560471000,
-          activeTime: 1540760471000
+          id: 1,
+          name: "小黑",
+          age: 23,
+          id_no: "123123123123123",
+          payment: "未缴交",
+          status: "未开始",
+          email: "123@qq.com",
+          phone: "123456678",
+          number: "STU1",
+          coach: "JLK001",
+          remark: "",
+          create_at: "",
+          update_at: ""
         },
         {
-          mId: 2,
-          mNumber: "10002",
-          mType: "转发订单",
-          mContent: "接乘客",
-          eRemark: "无",
-          createTime: 1540560471000,
-          activeTime: 1540680471000
+          id: 2,
+          name: "小王",
+          age: 26,
+          id_no: "",
+          payment: "全部缴交",
+          status: "科目一预约",
+          email: "123123@qq.com",
+          phone: "123",
+          number: "STU2",
+          coach: "JLK002",
+          remark: "",
+          create_at: "",
+          update_at: ""
         }
       ],
       addVisible: false, // 添加弹窗flag
@@ -142,24 +134,50 @@ export default {
       detailId: 0, // 详情ID
       filters: {
         // 搜索表单
-        number: ""
+        name: ""
       }
     };
   },
   components: {
-    "mission-add": MissionAdd,
-    "mission-detail": MissionDetail
+    "student-add": StudnetAdd
+    // 'mission-add': MissionAdd,
+    // 'mission-detail': MissionDetail
+  },
+  created: function() {
+    // 组件创建完后获取数据，
+    // 此时 data 已经被 observed 了
+    this.fetchData(); //调用接口获取动态数据
   },
   methods: {
-    // 搜索
-    handleSearch() {
-      console.info(this.filters.number);
+    //获取数据
+    fetchData() {
+      let params = {
+        curr: this.currentPage, //当前页
+        pageSize: this.pageSize, //每页的大小
+        keywords: this.filters.name //关键字？  filter-过滤
+      };
+      this.loading = true; //调出拼命加载中
+      apis.studentApi
+        .findList(params) //在这里插入后端浏览列表
+        .then(data => {
+          console.log(data.count);
+          console.log(data.curr);
+          console.log(data.data);
+          this.total = data.count; //数据的数量
+          this.currentPage = data.curr; //这个应该是关于页数的吧？不清楚
+          this.studentData = data.data; //这里是数据
+          this.setLoding(false);
+        })
+        .catch(error => {
+          this.loading = false;
+          this.dialogText = error.message;
+          this.dialogVisible = true;
+          console.log(error);
+        });
     },
     // 详情
-    handleDetail(row, event, column) {
-      this.detailId = row.mId;
-      this.maskVisible = true;
-      this.detailVisible = true;
+    modifyStudent(val) {
+      this.$router.push({ path: "/studentManager/detail", query: { id: val } }); //用go刷新
     },
     // 删除
     handleDelete(index, row) {
@@ -167,12 +185,12 @@ export default {
     },
     // 选择每页显示条数
     handleSizeChange(val) {
-      //        this.pageSize = val;
-      //        this.currentPage = 1;
+      this.pageSize = val;
+      this.currentPage = 1;
     },
     // 跳转页
     handleCurrentChange(val) {
-      //        this.currentPage = val;
+      this.currentPage = val;
     },
     // 添加弹窗
     showAddDialog() {

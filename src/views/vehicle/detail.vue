@@ -26,10 +26,10 @@
             <el-form-item label="负责人" prop="chargeMan" width="60">
               <el-select v-model="carData.chargeMan" placeholder="请选择">
                 <el-option
-                  v-for="item in chargeMen"
-                  :key="item.email"
+                  v-for="item in chargeMens"
+                  :key="item.dept_no"
                   :label="item.name"
-                  :value="item.email"
+                  :value="item.dept_no"
                 >
                 </el-option>
               </el-select>
@@ -160,12 +160,11 @@ export default {
           label: "其他"
         }
       ],
-      chargeMen: [
-        //这里的内容需要后端获取教练科的员工数据
+      chargeMens: [
+        //这里的内容后端获取教练科的员工数据
         {
-          id: 23,
-          name: "小黑",
-          email: "948320166@qq.com"
+          dept_no: "JLK001",
+          name: "小黑"
         }
       ],
       // 表单验证，需要在 el-form-item 元素中增加 prop 属性
@@ -181,6 +180,7 @@ export default {
     // 组件创建完后获取数据，
     // 此时 data 已经被 observed 了
     this.carData.id = this.$route.query.id; //将获取道德email发送给后端，让后端根据该邮箱查询用户所有信息
+    this.getCoach(); //获取教练
     this.fetchData(); //调用接口获取动态数据
   },
   methods: {
@@ -198,6 +198,21 @@ export default {
             this.carData.update_at = this.TimeFormat(this.carData.update_at);
             console.log("数据拉取完成！");
             this.setLoding(false);
+          }
+        })
+        .catch(error => {
+          this.loading = false;
+          this.dialogText = error.message;
+          this.dialogVisible = true;
+          console.log(error);
+        });
+    },
+    getCoach() {
+      apis.deptApi
+        .getCoach() //在这里插入后端浏览列表
+        .then(data => {
+          if (data.status === "SUCCESS") {
+            this.chargeMens = data.staffInfo; //获取教练列表
           }
         })
         .catch(error => {

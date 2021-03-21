@@ -19,4 +19,7 @@ export default {
   updateStaff: params => {
     return API.POST("/api/updateStaff", params);
   },
+  getCoach: params => {
+    return API.GET("/api/selectCoach", params);
+  },
 };

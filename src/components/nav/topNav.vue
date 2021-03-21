@@ -29,6 +29,7 @@
               <el-menu-item index="/userManager">用户管理</el-menu-item>
               <el-menu-item index="/vehicleManager">车辆管理</el-menu-item>
               <el-menu-item index="/deptManager">部门管理</el-menu-item>
+              <el-menu-item index="/studentManager">学生管理</el-menu-item>
               <!-- 这里是 首页 顶端栏的显示的按钮，可以在这里进行修改 -->
             </el-menu>
           </el-col>

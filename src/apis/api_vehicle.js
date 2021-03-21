@@ -18,5 +18,5 @@ export default {
   },
   updateCar: params => {
     return API.POST("/api/updateCar", params);
-},
+  }
 };
