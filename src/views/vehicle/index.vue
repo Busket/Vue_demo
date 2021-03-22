@@ -63,18 +63,6 @@
           width="180"
           :formatter="createTimeFormat"
         ></el-table-column>
-        <!--        <el-table-column-->
-        <!--          prop="update_at"-->
-        <!--          label="更新日期"-->
-        <!--          width="180"-->
-        <!--          :formatter="updateTimeFormat"-->
-        <!--        ></el-table-column>-->
-        <!--        &lt;!&ndash;          这个状态指的是是否激活的状态&ndash;&gt;-->
-        <!--        <el-table-column-->
-        <!--          prop="activecode"-->
-        <!--          label="状态"-->
-        <!--          width="180"-->
-        <!--        ></el-table-column>-->
         <el-table-column
           label="操作"
           align="center"
@@ -92,10 +80,6 @@
           </template>
         </el-table-column>
       </el-table>
-      <!--<div style="margin-top: 20px">
-        <el-button @click="toggleSelection([tableData3[1], tableData3[2]])">切换第二、第三行的选中状态</el-button>
-        <el-button @click="toggleSelection()">取消选择</el-button>
-      </div>-->
       <el-col :span="24" class="toolbar">
         <el-pagination
           background

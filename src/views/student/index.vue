@@ -180,8 +180,51 @@ export default {
       this.$router.push({ path: "/studentManager/detail", query: { id: val } }); //用go刷新
     },
     // 删除
-    handleDelete(index, row) {
-      console.log(index, row);
+    deleteStudent(id) {
+      let params = {
+        id: id //将id传给后端，进行删除
+      };
+      this.$confirm("此操作将永久删除该学生, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          console.log(params);
+          apis.studentApi
+            .deleteStudent(params) //在这里插入后端浏览列表
+            .then(data => {
+              console.log(data.message);
+              if (data.message === "Success") {
+                this.$message({
+                  type: "success",
+                  message: "删除成功!"
+                });
+                this.fetchData();
+              } else {
+                this.$message({
+                  type: "info",
+                  message: "删除失败!"
+                });
+              }
+            })
+            .catch(error => {
+              this.loading = false;
+              this.dialogText = error.message;
+              this.dialogVisible = true;
+              console.log(error);
+              this.$message({
+                type: "info",
+                message: "删除失败"
+              });
+            });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "删除失败"
+          });
+        });
     },
     // 选择每页显示条数
     handleSizeChange(val) {
