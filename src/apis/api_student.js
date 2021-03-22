@@ -13,10 +13,10 @@ export default {
   // deleteCar: params => {
   //   return API.GET("/api/deleteCar", params);
   // },
-  // findCarById: params => {
-  //   return API.GET("/api/selectCarById", params);
-  // },
-  // updateCar: params => {
-  //   return API.POST("/api/updateCar", params);
-  // },
+  findStudebtByID: params => {
+    return API.GET("/api/selectStudentById", params);
+  },
+  updateStudent: params => {
+    return API.POST("/api/updateStudent", params);
+  }
 };
