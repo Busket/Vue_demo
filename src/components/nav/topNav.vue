@@ -25,31 +25,27 @@
               @select="handleSelect"
               :router="true"
             >
-              <el-menu-item index="/">工作台</el-menu-item>
-              <el-menu-item index="/userManager">用户管理</el-menu-item>
-              <el-menu-item index="/vehicleManager">车辆管理</el-menu-item>
-              <el-menu-item index="/deptManager">部门管理</el-menu-item>
-              <el-menu-item index="/studentManager">学生管理</el-menu-item>
+              <el-menu-item index="/student" v-show="userManagerVisible">学生</el-menu-item>
+              <el-menu-item index="/userManager" v-show="userManagerVisible"
+                >用户管理</el-menu-item
+              >
+              <el-menu-item
+                index="/vehicleManager"
+                v-show="vehicleManagerVisible"
+                >车辆管理</el-menu-item
+              >
+              <el-menu-item index="/deptManager" v-show="deptManagerVisible"
+                >部门管理</el-menu-item
+              >
+              <el-menu-item
+                index="/studentManager"
+                v-show="studentManagerVisible"
+                >学生管理</el-menu-item
+              >
               <!-- 这里是 首页 顶端栏的显示的按钮，可以在这里进行修改 -->
             </el-menu>
           </el-col>
         </el-row>
-        <!--        这里是 企业管理 的组件，设置顶端栏的显示-->
-        <!--        <el-row v-show="$store.state.topNavState === 'enterprise'">-->
-        <!--          <el-col :span="24">-->
-        <!--            <el-menu-->
-        <!--              :default-active="defaultActiveIndex"-->
-        <!--              class="el-menu-demo"-->
-        <!--              mode="horizontal"-->
-        <!--              @select="handleSelect"-->
-        <!--              :router="true"-->
-        <!--            >-->
-        <!--              <el-menu-item index="/enterpriseManager">企业信息</el-menu-item>-->
-        <!--              <el-menu-item index="/vehicleManager">车辆信息</el-menu-item>-->
-        <!--              <el-menu-item index="/deptManager">组织架构</el-menu-item>-->
-        <!--            </el-menu>-->
-        <!--          </el-col>-->
-        <!--        </el-row>-->
       </div>
       <!--      这里是右上角的按钮，到时在这里添加接口！！！-->
       <div class="topbar-account topbar-btn">
@@ -90,7 +86,12 @@ export default {
       nickname: "",
       defaultActiveIndex: "/",
       homeMenu: false,
-      messageCount: 5
+      messageCount: 5,
+      userManagerVisible: false,
+      vehicleManagerVisible: false,
+      deptManagerVisible: false,
+      studentManagerVisible: false,
+      student:false
     };
   },
   created() {
@@ -106,6 +107,33 @@ export default {
     });
     // 组件创建完后获取数据
     this.fetchNavData();
+    // 组件创建完后获取数据，
+    if (
+      JSON.parse(window.sessionStorage.getItem("userInfo")).userJurisdiction ===
+      "103"
+    ) {
+      //教练标签
+      this.studentManagerVisible = true;
+    } else if (
+      JSON.parse(window.sessionStorage.getItem("userInfo")).userJurisdiction ===
+      "104"
+    ) {
+      this.vehicleManagerVisible = true;
+      this.deptManagerVisible = true;
+    } else if (
+      JSON.parse(window.sessionStorage.getItem("userInfo")).userJurisdiction ===
+      "102"
+    ) {
+      this.student = true;
+    } else if (
+      JSON.parse(window.sessionStorage.getItem("userInfo")).userJurisdiction ===
+      "101"
+    ) {
+      this.userManagerVisible = true;
+      this.vehicleManagerVisible = true;
+      this.deptManagerVisible = true;
+      this.studentManagerVisible = true;
+    }
   },
   methods: {
     jumpTo(url) {
@@ -158,7 +186,7 @@ export default {
       })
         .then(() => {
           //确认
-          sessionStorage.removeItem("access-user");
+          sessionStorage.removeItem("userInfo");
           // road.$emit("goto", "/loginPage");
           this.$router.push("/loginPage");
         })
@@ -166,7 +194,7 @@ export default {
     }
   },
   mounted() {
-    let user = window.sessionStorage.getItem("access-user");
+    let user = window.sessionStorage.getItem("userInfo");
     if (user) {
       user = JSON.parse(user);
       this.nickname = user.nickname || "";

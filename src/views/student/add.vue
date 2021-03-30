@@ -75,6 +75,18 @@
           <el-option label="完成练车" value="完成练车"></el-option>
         </el-select>
       </el-form-item>
+
+      <el-form-item
+        label="学习类型："
+        prop="typeOfClass"
+        :label-width="formLabelWidth"
+      >
+      <el-select v-model="studentData.typeOfClass" placeholder="请选择">
+        <el-option label="C1" value="C1"></el-option>
+        <el-option label="C2" value="C2"></el-option>
+      </el-select>
+      </el-form-item>
+
       <el-form-item label="备注：" :label-width="formLabelWidth">
         <el-input
           v-model="studentData.remark"
@@ -111,7 +123,12 @@ export default {
         status: "未开始",
         email: "",
         phone: "",
-        remark: ""
+        remark: "",
+        subject_1: "",
+        subject_2: "",
+        subject_3: "",
+        subject_4: "",
+        typeOfClass: ""
       },
       coachs: [
         {
@@ -156,7 +173,7 @@ export default {
           params.append("coach", this.studentData.coach);
           params.append("status", this.studentData.status);
           params.append("remark", this.studentData.remark);
-
+          params.append("typeOfClass", this.studentData.typeOfClass);
           console.log(params);
           apis.studentApi
             .addStudent(params)

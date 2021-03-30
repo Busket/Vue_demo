@@ -18,5 +18,8 @@ export default {
   },
   updateStudent: params => {
     return API.POST("/api/updateStudent", params);
-  }
+  },
+  findStudebtByEmail: params => {
+    return API.GET("/api/selectStudentByEmail", params);
+  },
 };

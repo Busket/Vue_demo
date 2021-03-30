@@ -63,7 +63,10 @@
 
           <el-col :span="10">
             <el-form-item label="年龄" prop="age">
-              <el-input v-model="studentData.age" @input="studentData.age = studentData.age.replace(/[^\d]/g, '')"></el-input> </el-form-item
+              <el-input
+                v-model="studentData.age"
+                @input="studentData.age = studentData.age.replace(/[^\d]/g, '')"
+              ></el-input> </el-form-item
           ></el-col>
         </el-row>
 
@@ -93,6 +96,77 @@
                 <el-option label="全部缴交" value="全部缴交"></el-option>
               </el-select> </el-form-item
           ></el-col>
+        </el-row>
+
+        <el-row :gutter="60">
+          <el-col :span="10">
+            <el-form-item label="科目一" prop="subject_1">
+              <el-input
+                v-model="studentData.subject_1"
+                @input="
+                  studentData.subject_1 = studentData.subject_1.replace(
+                    /[^\d]/g,
+                    ''
+                  )
+                "
+              ></el-input>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="10">
+            <el-form-item label="科目二" prop="subject_2">
+              <el-input
+                v-model="studentData.subject_2"
+                @input="
+                  studentData.subject_2 = studentData.subject_2.replace(
+                    /[^\d]/g,
+                    ''
+                  )
+                "
+              ></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="60">
+          <el-col :span="10">
+            <el-form-item label="科目三" prop="subject_3">
+              <el-input
+                v-model="studentData.subject_3"
+                @input="
+                  studentData.subject_3 = studentData.subject_3.replace(
+                    /[^\d]/g,
+                    ''
+                  )
+                "
+              ></el-input>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="10">
+            <el-form-item label="科目四" prop="subject_4">
+              <el-input
+                v-model="studentData.subject_4"
+                @input="
+                  studentData.subject_4 = studentData.subject_4.replace(
+                    /[^\d]/g,
+                    ''
+                  )
+                "
+              ></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="60">
+          <el-col :span="10">
+            <el-form-item label="学习类型" prop="typeOfClass">
+              <el-select v-model="studentData.typeOfClass" placeholder="请选择">
+                <el-option label="C1" value="C1"></el-option>
+                <el-option label="C2" value="C2"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
         </el-row>
         <el-row :gutter="60">
           <el-col :span="10">
@@ -179,7 +253,12 @@ export default {
         coach: "JLK001",
         remark: "",
         create_at: "",
-        update_at: ""
+        update_at: "",
+        subject_1: "",
+        subject_2: "",
+        subject_3: "",
+        subject_4: "",
+        typeOfClass: ""
       },
       multipleSelection: [],
       state: "",
@@ -199,6 +278,7 @@ export default {
     // 组件创建完后获取数据，
     // 此时 data 已经被 observed 了
     this.studentData.id = this.$route.query.id; //将获取道德email发送给后端，让后端根据该邮箱查询用户所有信息
+    this.getCoach(); //调用接口获取教练的数据
     this.fetchData(); //调用接口获取动态数据
   },
   methods: {
@@ -221,6 +301,11 @@ export default {
           this.studentData.coach = data.studentInfo.coach;
           this.studentData.remark = data.studentInfo.remark;
           this.studentData.age = data.studentInfo.age;
+          this.studentData.subject_1 = data.studentInfo.subject_1;
+          this.studentData.subject_2 = data.studentInfo.subject_2;
+          this.studentData.subject_3 = data.studentInfo.subject_3;
+          this.studentData.subject_4 = data.studentInfo.subject_4;
+          this.studentData.typeOfClass = data.studentInfo.typeOfClass;
           this.studentData.create_at = this.changeTimeFormat(
             data.studentInfo.create_at
           );
@@ -249,6 +334,11 @@ export default {
       params.append("payment", this.studentData.payment);
       params.append("status", this.studentData.status);
       params.append("remark", this.studentData.remark);
+      params.append("subject_1", this.studentData.subject_1);
+      params.append("subject_2", this.studentData.subject_2);
+      params.append("subject_3", this.studentData.subject_3);
+      params.append("subject_4", this.studentData.subject_4);
+      params.append("typeOfClass", this.studentData.typeOfClass);
       this.$confirm("此操作将修改学生信息, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -288,6 +378,21 @@ export default {
             type: "info",
             message: "修改取消"
           });
+        });
+    },
+    getCoach() {
+      apis.deptApi
+        .getCoach() //在这里插入后端浏览列表
+        .then(data => {
+          if (data.status === "SUCCESS") {
+            this.coachs = data.staffInfo; //获取教练列表
+          }
+        })
+        .catch(error => {
+          this.loading = false;
+          this.dialogText = error.message;
+          this.dialogVisible = true;
+          console.log(error);
         });
     },
     setLoding(bool) {

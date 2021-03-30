@@ -22,4 +22,7 @@ export default {
   getCoach: params => {
     return API.GET("/api/selectCoach", params);
   },
+  studentGetCoach: params => {
+    return API.GET("/api/selectCoachByNumber", params);
+  },
 };

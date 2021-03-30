@@ -33,9 +33,35 @@ import informationCenter from "@/views/dept/informationCenter";
 import office from "@/views/dept/office";
 import AddStaff from "@/views/dept/add";
 import StaffDetail from "@/views/dept/detail";
+//学生
+import Student from "../views/student.vue";
 
 Vue.use(VueRouter);
 
+// 路由白名单
+// var constRouters = [
+//   {
+//     path: "/loginPage",
+//     name: "LoginPage",
+//     component: () =>
+//       import(/* webpackChunkName: "about" */ "../views/LoginPage.vue")
+//   },
+//   {
+//     path: "/404",
+//     component: resolve => require(["../components/common/404.vue"], resolve)
+//   },
+//   {
+//     path: "/403",
+//     component: resolve => require(["../components/common/403.vue"], resolve)
+//   },
+//   {
+//     path: "*",
+//     redirect: "/404"
+//   }
+// ];
+
+//异步挂载的路由
+//动态需要根据权限加载的路由表
 const routes = [
   {
     path: "/",
@@ -46,7 +72,7 @@ const routes = [
     children: [
       {
         path: "/dashboard",
-        name: "首页",
+        name: "欢迎页",
         components: {
           default: Dashboard,
           top: TopNav,
@@ -55,62 +81,62 @@ const routes = [
         leaf: true, // 只有一个节点
         iconCls: "iconfont icon-home", // 图标样式class
         menuShow: true //左侧栏是否显示
-      },
-      {
-        path: "/appointment/index",
-        name: "练车预约",
-        components: {
-          default: Appointment,
-          top: TopNav,
-          aside: LeftNav
-        },
-        leaf: true, // 只有一个节点
-        iconCls: "el-icon-menu", // 图标样式class
-        menuShow: true //左侧栏是否显示
-      },
-      {
-        path: "/appointment/detail",
-        name: "练车预约",
-        components: {
-          default: AppointmentDetail,
-          top: TopNav,
-          aside: LeftNav
-        },
-        leaf: true, // 只有一个节点
-        iconCls: "el-icon-menu", // 图标样式class
-        menuShow: false //左侧栏是否显示
-      },
-      {
-        path: "/mySet",
-        components: {
-          default: MySettings,
-          top: TopNav,
-          aside: LeftNav
-        },
-        name: "我的",
-        iconCls: "el-icon-menu",
-        menuShow: true,
-        children: [
-          {
-            path: "/mySet/plan",
-            component: Plan,
-            name: "练车计划",
-            menuShow: true
-          },
-          {
-            path: "/mySet/mission",
-            component: Mission,
-            name: "任务",
-            menuShow: true
-          }
-          // ,{
-          //   path: "/mySet/maillist",
-          //   component: Maillist,
-          //   name: "通讯录",
-          //   menuShow: true
-          // }
-        ]
       }
+      // {
+      //   path: "/appointment/index",
+      //   name: "练车预约",
+      //   components: {
+      //     default: Appointment,
+      //     top: TopNav,
+      //     aside: LeftNav
+      //   },
+      //   leaf: true, // 只有一个节点
+      //   iconCls: "el-icon-menu", // 图标样式class
+      //   menuShow: true //左侧栏是否显示
+      // },
+      // {
+      //   path: "/appointment/detail",
+      //   name: "练车预约",
+      //   components: {
+      //     default: AppointmentDetail,
+      //     top: TopNav,
+      //     aside: LeftNav
+      //   },
+      //   leaf: true, // 只有一个节点
+      //   iconCls: "el-icon-menu", // 图标样式class
+      //   menuShow: false //左侧栏是否显示
+      // },
+      // {
+      //   path: "/mySet",
+      //   components: {
+      //     default: MySettings,
+      //     top: TopNav,
+      //     aside: LeftNav
+      //   },
+      //   name: "我的",
+      //   iconCls: "el-icon-menu",
+      //   menuShow: true,
+      //   children: [
+      //     {
+      //       path: "/mySet/plan",
+      //       component: Plan,
+      //       name: "练车计划",
+      //       menuShow: true
+      //     },
+      //     {
+      //       path: "/mySet/mission",
+      //       component: Mission,
+      //       name: "任务",
+      //       menuShow: true
+      //     }
+      //     // ,{
+      //     //   path: "/mySet/maillist",
+      //     //   component: Maillist,
+      //     //   name: "通讯录",
+      //     //   menuShow: true
+      //     // }
+      //   ]
+      // }
     ]
   },
   {
@@ -119,7 +145,6 @@ const routes = [
     name: "userManager",
     component: Home,
     redirect: "/userManager/list",
-    menuShow: true,
     children: [
       {
         path: "/userManager/list",
@@ -372,13 +397,26 @@ const routes = [
     ]
   },
   {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
+    path: "/student",
+    type: "Student",
+    name: "Student",
+    component: Home,
+    redirect: "/student",
+    menuShow: true,
+    children: [
+      {
+        path: "/student",
+        name: "学生页",
+        components: {
+          default: Student,
+          top: TopNav,
+          aside: LeftNav
+        },
+        leaf: true, // 只有一个节点
+        iconCls: "iconfont icon-home", // 图标样式class
+        menuShow: true //左侧栏是否显示
+      }
+    ]
   },
   {
     path: "/studentManager",
@@ -446,10 +484,41 @@ const routes = [
   }
 ];
 
-const router = new VueRouter({
+// const router = new VueRouter({
+//   mode: "history",
+//   base: process.env.BASE_URL,
+//   routes
+// });
+//实例化vue的时候只挂载constRouters
+
+let router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes
+  routes: routes
 });
 
+// 加入其它路由
+// router.addRoutes(routes);
+//假设有两种角色：admin 和 user
+//从后台获取的用户角色
+
+// var userInfo = JSON.parse(window.sessionStorage.getItem("userInfo"));
+// const role = userInfo.userJurisdiction;
+//当进入一个页面是会触发导航守卫 router.beforeEach 事件
+router.beforeEach((to, from, next) => {
+  if (to.path.startsWith("/loginPage")) {
+    //如果是去登录页就清除目前的用户信息
+    window.sessionStorage.removeItem("userInfo"); //清除用户信息
+    next();
+  } else {
+    let user = JSON.parse(window.sessionStorage.getItem("userInfo")); //去登录页之外
+    if (!user) {
+      next({ path: "/loginPage" });
+    } else {
+      next(); //放行
+    }
+  }
+});
+
+//实例化vue的时候只挂载router
 export default router;
