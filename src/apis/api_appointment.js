@@ -26,4 +26,7 @@ export default {
   // findStudebtByEmail: params => {
   //   return API.GET("/api/selectStudentByEmail", params);
   // },
+  deleteAppointment: params => {
+    return API.GET("/api/deleteAppointment", params);
+  },
 };

@@ -213,9 +213,8 @@
             :disabled="true"
           >
           </el-date-picker>
-<!--          {{ ap.date }}<br />-->
+          <!--          {{ ap.date }}<br />-->
           <div class="text item">
-
             {{ ap.time }}<br />
             {{ ap.subject }}<br />
           </div>
@@ -433,7 +432,50 @@ export default {
       }
     },
     deleteAp(id) {
-      console.log(id);
+      let params = {
+        id: id //将id传给后端，进行删除
+      };
+      this.$confirm("此操作将取消预约, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          console.log(params);
+          apis.appointmentApi
+            .deleteAppointment(params) //在这里插入后端浏览列表
+            .then(data => {
+              console.log(data.message);
+              if (data.message === "Success") {
+                this.$message({
+                  type: "success",
+                  message: "删除成功!"
+                });
+                this.fetchData();
+              } else {
+                this.$message({
+                  type: "info",
+                  message: "删除失败!"
+                });
+              }
+            })
+            .catch(error => {
+              this.loading = false;
+              this.dialogText = error.message;
+              this.dialogVisible = true;
+              console.log(error);
+              this.$message({
+                type: "info",
+                message: "删除失败"
+              });
+            });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "删除失败"
+          });
+        });
     },
     getMyAp() {
       let params = { student_no: this.studentData.number };
