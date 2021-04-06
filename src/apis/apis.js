@@ -5,6 +5,7 @@ import userApi from "@/apis/api_user";
 import vehicleApi from "@/apis/api_vehicle";
 import deptApi from "@/apis/api_department";
 import studentApi from "@/apis/api_student";
+import appointmentApi from "@/apis/api_appointment";
 
 /**
  * 接口汇总
@@ -25,5 +26,7 @@ export default {
   /**部门接口 */
   deptApi: deptApi,
   /**学生接口 */
-  studentApi: studentApi
+  studentApi: studentApi,
+  /**预约接口 */
+  appointmentApi: appointmentApi
 };

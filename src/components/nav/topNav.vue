@@ -25,7 +25,9 @@
               @select="handleSelect"
               :router="true"
             >
-              <el-menu-item index="/student" v-show="userManagerVisible">学生</el-menu-item>
+              <el-menu-item index="/student" v-show="student"
+                >学生</el-menu-item
+              >
               <el-menu-item index="/userManager" v-show="userManagerVisible"
                 >用户管理</el-menu-item
               >
@@ -91,7 +93,7 @@ export default {
       vehicleManagerVisible: false,
       deptManagerVisible: false,
       studentManagerVisible: false,
-      student:false
+      student: false
     };
   },
   created() {

@@ -29,11 +29,7 @@
       </el-col>
       <!--表格数据-->
       <el-col class="table-wrapper">
-        <el-table
-          :data="studentData"
-          stripe
-          style="width: 100%"
-        >
+        <el-table :data="studentData" stripe style="width: 100%">
           <el-table-column prop="number" label="学生编号"></el-table-column>
           <el-table-column prop="name" label="姓名"></el-table-column>
           <el-table-column prop="phone" label="联系方式"></el-table-column>
@@ -56,20 +52,9 @@
           </el-table-column>
         </el-table>
       </el-col>
-      <el-col :span="24" class="toolbar">
-        <el-pagination
-          background
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[10, 50, 100, 200]"
-          :page-size="pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total"
-        >
-        </el-pagination>
-      </el-col>
     </el-row>
+
+
 
     <!--添加-->
     <student-add
@@ -245,11 +230,11 @@ export default {
       this.detailVisible = false;
     },
     // 创建日期转换
-    dateFormatter(row, column) {
+    dateFormatter(row) {
       return this.getDateValue(row.createTime);
     },
     // 执行日期转换
-    activeTateFormatter(row, column) {
+    activeTateFormatter(row) {
       return this.getDateValue(row.activeTime);
     },
     // 获取日期
@@ -288,4 +273,5 @@ export default {
   background-color: #000;
   opacity: 0.3;
 }
+
 </style>
