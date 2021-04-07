@@ -5,11 +5,6 @@ import TopNav from "@/components/nav/topNav.vue";
 import LeftNav from "@/components/nav/leftNav.vue";
 //我的设置当中的东西
 import Dashboard from "@/views/workbench/dashboard.vue";
-import MySettings from "@/views/workbench/mySettings.vue";
-import Plan from "@/views/workbench/plan/plan.vue";
-import Mission from "@/views/workbench/mission/mission.vue";
-import Appointment from "@/views/workbench/appointment/index";
-import AppointmentDetail from "@/views/workbench/appointment/detail";
 //学生管理当中的东西
 import StudentList from "@/views/student/index";
 import StudentDetail from "@/views/student/detail";
@@ -35,7 +30,11 @@ import AddStaff from "@/views/dept/add";
 import StaffDetail from "@/views/dept/detail";
 //学生
 import Student from "../views/student.vue";
-
+//教练
+import CoachIndex from "../views/coach/index";
+import coachStudentDetail from "../views/coach/detail";
+import apIndex from "@/views/coach/apIndex";
+import apDetail from "@/views/coach/apDetail"
 Vue.use(VueRouter);
 
 // 路由白名单
@@ -416,6 +415,64 @@ const routes = [
         iconCls: "iconfont icon-home", // 图标样式class
         menuShow: true //左侧栏是否显示
       }
+    ]
+  },
+  {
+    path: "/coach",
+    type: "Coach",
+    name: "Coach",
+    component: Home,
+    redirect: "/coach/index",
+    menuShow: true,
+    children: [
+      {
+        path: "/coach/index",
+        name: "学生管理",
+        components: {
+          default: CoachIndex,
+          top: TopNav,
+          aside: LeftNav
+        },
+        leaf: true, // 只有一个节点
+        iconCls: "iconfont icon-home", // 图标样式class
+        menuShow: true //左侧栏是否显示
+      },
+      {
+        path: "/coach/detail",
+        name: "学生详情",
+        components: {
+          default: coachStudentDetail,
+          top: TopNav,
+          aside: LeftNav
+        },
+        leaf: true,
+        iconCls: "el-icon-setting",
+        menuShow: false
+      },
+      {
+        path: "/coach/apIndex",
+        name: "预约记录",
+        components: {
+          default: apIndex,
+          top: TopNav,
+          aside: LeftNav
+        },
+        leaf: true,
+        iconCls: "el-icon-setting",
+        menuShow: true
+      },
+      // {
+      //   path: "/coach/apDetail",
+      //   name: "学生详情",
+      //   components: {
+      //     default: apDetail,
+      //     top: TopNav,
+      //     aside: LeftNav
+      //   },
+      //   leaf: true,
+      //   iconCls: "el-icon-setting",
+      //   menuShow: false
+      // }
     ]
   },
   {

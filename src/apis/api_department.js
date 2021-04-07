@@ -25,4 +25,7 @@ export default {
   studentGetCoach: params => {
     return API.GET("/api/selectCoachByNumber", params);
   },
+  getCoachInfo: params => {
+    return API.GET("/api/getCoachInfo", params);
+  },
 };

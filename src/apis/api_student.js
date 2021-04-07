@@ -22,4 +22,7 @@ export default {
   findStudebtByEmail: params => {
     return API.GET("/api/selectStudentByEmail", params);
   },
+  coachFindList: params => {
+    return API.GET("/api/coachFindList", params);
+  },
 };

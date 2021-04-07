@@ -28,6 +28,9 @@
               <el-menu-item index="/student" v-show="student"
                 >学生</el-menu-item
               >
+              <el-menu-item index="/coach" v-show="coach"
+              >教练</el-menu-item
+              >
               <el-menu-item index="/userManager" v-show="userManagerVisible"
                 >用户管理</el-menu-item
               >
@@ -93,7 +96,8 @@ export default {
       vehicleManagerVisible: false,
       deptManagerVisible: false,
       studentManagerVisible: false,
-      student: false
+      student: false,
+      coach:false
     };
   },
   created() {
@@ -115,7 +119,7 @@ export default {
       "103"
     ) {
       //教练标签
-      this.studentManagerVisible = true;
+      this.coach=true;
     } else if (
       JSON.parse(window.sessionStorage.getItem("userInfo")).userJurisdiction ===
       "104"
