@@ -7,8 +7,8 @@
           :data="appointmentData"
           stripe
           style="width: 100%"
-          @row-click="handleDetail"
         >
+          <!--          @row-click="handleDetail"-->
           <el-table-column
             prop="id"
             label="预约编号"
@@ -141,10 +141,6 @@ export default {
           console.log(error);
         });
     },
-    // 详情
-    modifyStudent(val) {
-      this.$router.push({ path: "/coach/detail", query: { id: val } }); //用go刷新
-    },
     // 选择每页显示条数
     handleSizeChange(val) {
       this.pageSize = val;
@@ -173,7 +169,7 @@ export default {
     },
     // 详情
     handleDetail(row) {
-      this.detailId = row.mId;
+      this.detailId = row.id;
       this.maskVisible = true;
       this.detailVisible = true;
     },

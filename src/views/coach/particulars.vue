@@ -39,6 +39,12 @@
 </template>
 <script>
 export default {
+  props: {
+    id: {
+      type: Number,
+      default: 0
+    }
+  },
   data() {
     return {
       infoData: {

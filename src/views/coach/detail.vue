@@ -19,7 +19,7 @@
 
           <el-col :span="10">
             <el-form-item label="姓名" prop="name" width="60">
-              <el-input v-model="studentData.name" :disabled="true" ></el-input>
+              <el-input v-model="studentData.name" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -27,12 +27,18 @@
         <el-row :gutter="60">
           <el-col :span="10">
             <el-form-item label="邮箱" prop="email" width="60">
-              <el-input v-model="studentData.email" :disabled="true"></el-input> </el-form-item
+              <el-input
+                v-model="studentData.email"
+                :disabled="true"
+              ></el-input> </el-form-item
           ></el-col>
 
           <el-col :span="10">
             <el-form-item label="联系方式" prop="phone">
-              <el-input v-model="studentData.phone" :disabled="true"></el-input> </el-form-item
+              <el-input
+                v-model="studentData.phone"
+                :disabled="true"
+              ></el-input> </el-form-item
           ></el-col>
         </el-row>
 
@@ -58,7 +64,10 @@
         <el-row :gutter="60">
           <el-col :span="10">
             <el-form-item label="身份证号" prop="id_no">
-              <el-input v-model="studentData.id_no" :disabled="true"></el-input> </el-form-item
+              <el-input
+                v-model="studentData.id_no"
+                :disabled="true"
+              ></el-input> </el-form-item
           ></el-col>
 
           <el-col :span="10">
@@ -74,7 +83,11 @@
         <el-row :gutter="60">
           <el-col :span="10">
             <el-form-item label="教练" prop="coach">
-              <el-select v-model="studentData.coach" placeholder="请选择" :disabled="true">
+              <el-select
+                v-model="studentData.coach"
+                placeholder="请选择"
+                :disabled="true"
+              >
                 <el-option
                   v-for="item in coachs"
                   :key="item.dept_no"
@@ -107,8 +120,9 @@
                 @input="
                   studentData.subject_1 = studentData.subject_1.replace(
                     /[^\d]/g,
-                    '')"
-
+                    ''
+                  )
+                "
               ></el-input>
             </el-form-item>
           </el-col>
@@ -161,7 +175,11 @@
         <el-row :gutter="60">
           <el-col :span="10">
             <el-form-item label="学习类型" prop="typeOfClass">
-              <el-select v-model="studentData.typeOfClass" placeholder="请选择" :disabled="true">
+              <el-select
+                v-model="studentData.typeOfClass"
+                placeholder="请选择"
+                :disabled="true"
+              >
                 <el-option label="C1" value="C1"></el-option>
                 <el-option label="C2" value="C2"></el-option>
               </el-select>
@@ -345,33 +363,80 @@ export default {
         type: "warning"
       })
         .then(() => {
-          apis.studentApi
-            .updateStudent(params)
-            .then(data => {
-              console.log(data.message);
-              if (data.status === "SUCCESS") {
-                this.$message({
-                  type: "success",
-                  message: "修改成功!"
-                });
-                this.fetchData();
-              } else {
+          if (this.studentData.status === "完成练车") {
+            this.$confirm(
+              "学员已完成练车，此操作将移除教练, 是否继续?",
+              "提示",
+              {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning"
+              }
+            )
+              .then(() => {
+                apis.studentApi
+                  .updateStudent(params)
+                  .then(data => {
+                    console.log(data.message);
+                    if (data.status === "SUCCESS") {
+                      this.$message({
+                        type: "success",
+                        message: "修改成功!"
+                      });
+                      this.fetchData();
+                    } else {
+                      this.$message({
+                        type: "info",
+                        message: "修改失败!"
+                      });
+                    }
+                  })
+                  .catch(error => {
+                    this.loading = false;
+                    this.dialogText = error.message;
+                    this.dialogVisible = true;
+                    console.log(error);
+                    this.$message({
+                      type: "info",
+                      message: "修改失败"
+                    });
+                  });
+              })
+              .catch(() => {
                 this.$message({
                   type: "info",
-                  message: "修改失败!"
+                  message: "修改取消"
                 });
-              }
-            })
-            .catch(error => {
-              this.loading = false;
-              this.dialogText = error.message;
-              this.dialogVisible = true;
-              console.log(error);
-              this.$message({
-                type: "info",
-                message: "修改失败"
               });
-            });
+          } else {
+            apis.studentApi
+              .updateStudent(params)
+              .then(data => {
+                console.log(data.message);
+                this.fetchData();
+                if (data.status === "SUCCESS") {
+                  this.$message({
+                    type: "success",
+                    message: "修改成功!"
+                  });
+                } else {
+                  this.$message({
+                    type: "info",
+                    message: "修改失败!"
+                  });
+                }
+              })
+              .catch(error => {
+                this.loading = false;
+                this.dialogText = error.message;
+                this.dialogVisible = true;
+                console.log(error);
+                this.$message({
+                  type: "info",
+                  message: "修改失败"
+                });
+              });
+          }
         })
         .catch(() => {
           this.$message({
