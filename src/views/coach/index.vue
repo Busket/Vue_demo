@@ -127,8 +127,8 @@ export default {
       apis.studentApi
         .coachFindList(params) //在这里插入后端浏览列表
         .then(data => {
-          this.total = data.count; //数据的数量
-          this.currentPage = data.curr; //这个应该是关于页数的吧？不清楚
+          // this.total = data.count; //数据的数量
+          // this.currentPage = data.curr; //这个应该是关于页数的吧？不清楚
           this.studentData = data.data; //这里是数据
           this.setLoding(false);
         })

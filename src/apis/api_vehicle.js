@@ -18,5 +18,8 @@ export default {
   },
   updateCar: params => {
     return API.POST("/api/updateCar", params);
-  }
+  },
+  studentGetCars: params => {
+    return API.GET("/api/studentGetCars", params);
+  },
 };

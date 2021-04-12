@@ -32,4 +32,5 @@ export default {
   deleteAppointment: params => {
     return API.GET("/api/deleteAppointment", params);
   },
+
 };

@@ -178,6 +178,13 @@
                   >预约练车</el-button
                 >
               </el-col>
+
+              <el-col :span="2" :offset="3">
+                <a href="https://gab.122.gov.cn/m/login" target="_blank">
+                <el-button type="primary"
+                >考试预约</el-button
+                ></a>
+              </el-col>
             </el-row>
           </el-row>
         </el-form>
@@ -292,23 +299,24 @@ export default {
       labelPosition: "right",
       appointmentVisible: false,
       studentData: {
-        id: 1,
-        name: "小黑",
-        age: 23,
-        id_no: "123123123123123",
-        payment: "未缴交",
-        status: "未开始",
-        email: "123@qq.com",
-        phone: "123456678",
-        number: "STU1",
-        coach: "JLK001",
-        coach_name: "小张",
-        coach_phone: "123123123",
+        id: "",
+        name: "",
+        age: "",
+        id_no: "",
+        payment: "",
+        status: "",
+        email: "",
+        phone: "",
+        number: "",
+        coach: "",
+        coach_name: "",
+        coach_phone: "",
         subject_1: "",
         subject_2: "",
         subject_3: "",
         subject_4: "",
-        typeOfClass: ""
+        typeOfClass: "",
+        car: ""
       },
       warmDialogVisible: false,
       dialogText: "您已经完成所有科目的学习，无需预约！",
@@ -378,7 +386,7 @@ export default {
           this.studentData.subject_4 = data.studentInfo.subject_4;
           this.studentData.typeOfClass = data.studentInfo.typeOfClass;
           this.getCoach(); //调用接口获取教练的数据
-          this.getMyAp();
+          this.getMyAp(); //获取预约记录
           this.loading = false;
         })
         .catch(error => {

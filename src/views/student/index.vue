@@ -52,6 +52,19 @@
           </el-table-column>
         </el-table>
       </el-col>
+      <el-col :span="24" class="toolbar">
+        <el-pagination
+          background
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[10, 50, 100, 200]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
+        >
+        </el-pagination>
+      </el-col>
     </el-row>
 
 
@@ -62,13 +75,13 @@
       v-if="addVisible"
       :visible.sync="addVisible"
     ></student-add>
-    <!--详情-->
-    <div class="modal-mask" v-if="maskVisible" @click="cancelVisible"></div>
-    <transition name="slide-fade">
-      <div class="detail-box" v-if="detailVisible">
-        <!--        <mission-detail ref="detailMission" :id="detailId"></mission-detail>-->
-      </div>
-    </transition>
+<!--    &lt;!&ndash;详情&ndash;&gt;-->
+<!--    <div class="modal-mask" v-if="maskVisible" @click="cancelVisible"></div>-->
+<!--    <transition name="slide-fade">-->
+<!--      <div class="detail-box" v-if="detailVisible">-->
+<!--        &lt;!&ndash;        <mission-detail ref="detailMission" :id="detailId"></mission-detail>&ndash;&gt;-->
+<!--      </div>-->
+<!--    </transition>-->
   </div>
 </template>
 <script>
@@ -211,14 +224,19 @@ export default {
           });
         });
     },
-    // 选择每页显示条数
     handleSizeChange(val) {
       this.pageSize = val;
       this.currentPage = 1;
+      this.fetchData();
+      //        console.log(`每页 ${val} 条`);
     },
-    // 跳转页
     handleCurrentChange(val) {
       this.currentPage = val;
+      this.fetchData();
+      //        console.log(`当前页: ${val}`);
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
     },
     // 添加弹窗
     showAddDialog() {

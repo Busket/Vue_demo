@@ -42,6 +42,11 @@
             v-model="appointmentData.time"
           ></el-table-column>
           <el-table-column
+            prop="car"
+            label="车牌号"
+            v-model="appointmentData.car"
+          ></el-table-column>
+          <el-table-column
             prop="pickUp"
             v-model="appointmentData.pickUp"
             label="是否接送"
@@ -85,7 +90,8 @@ export default {
           remark: "",
           date: "",
           time: "",
-          pickUp: ""
+          pickUp: "",
+          car:""
         },
         {
           id: 2,
@@ -98,7 +104,8 @@ export default {
           remark: "",
           date: "",
           time: "",
-          pickUp: ""
+          pickUp: "",
+          car:""
         }
       ],
       addVisible: false, // 添加弹窗flag

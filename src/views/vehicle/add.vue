@@ -199,12 +199,14 @@ export default {
         .addCar(params) //还需要写接口
         .then(data => {
           console.log(data.status);
-          this.$message({
-            type: "success",
-            message: "添加成功!"
-          });
-          this.goBack();
-          this.setLoding(false);
+          if (data.status=="Success"){
+            this.$message({
+              type: "success",
+              message: "添加成功!"
+            });
+            this.goBack();
+            this.setLoding(false);
+          }
         })
         .catch(error => {
           this.loading = false;

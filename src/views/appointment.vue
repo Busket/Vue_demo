@@ -79,6 +79,22 @@
           <el-radio label="否">否</el-radio>
         </el-radio-group>
       </el-form-item>
+      <el-form-item
+        label="车辆"
+        prop="car"
+        :label-width="formLabelWidth"
+        v-show="this.carChooseVisible"
+      >
+        <el-select v-model="form.car" placeholder="请选择">
+          <el-option
+            v-for="item in cars"
+            :key="item.carNumber"
+            :label="item.carNumber"
+            :value="item.carNumber"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click.native="handleClose">取消</el-button>
@@ -121,8 +137,14 @@ export default {
     }
   },
   created: function() {
-    console.log(this.form.status);
-    this.getSubject(this.form.status);
+    console.log(this.status);
+    // this.getSubject(this);
+    console.log(this.subject)
+    if (this.subject === "科目二" || this.subject === "科目三") {
+      //只有是在科目二或者科目三的情况下才能够
+      this.getCars(this.subject); //调用接口后去车辆信息
+      this.carChooseVisible = true;
+    }
   },
   data() {
     return {
@@ -136,8 +158,10 @@ export default {
         remark: "",
         date: Date.now(),
         time: "",
-        pickUp: ""
+        pickUp: "",
+        car: ""
       },
+      cars: [{ carNumber: "任意" }, { carNumber: "任意" }, { carNumber: "任意" }],
       formLabelWidth: "120px",
       pickerOptions0: {
         disabledDate(time) {
@@ -145,6 +169,7 @@ export default {
         }
       },
       warmDialogVisible: false,
+      carChooseVisible: false,
       dialogText: "您已经完成所有科目的学习，无需预约！"
     };
   },
@@ -159,6 +184,7 @@ export default {
       params.append("pickUp", this.form.pickUp);
       params.append("time", this.form.time);
       params.append("remark", this.form.remark);
+      params.append("car", this.form.car);
 
       apis.appointmentApi
         .makeAppointment(params)
@@ -166,7 +192,7 @@ export default {
           if (data.status === "Success") {
             this.$message.success("预约成功！");
             this.handleClose();
-          }else if(data.status==="Fail"){
+          } else if (data.status === "Fail") {
             this.$message.info(data.message);
           }
         })
@@ -179,6 +205,26 @@ export default {
     // 关闭
     handleClose() {
       this.$emit("update:visible", false);
+    },
+    getCars(subject) {
+      let params = {
+        subject: subject,
+        coach: this.coach_no
+      };
+      console.log(subject);
+      apis.vehicleApi
+        .studentGetCars(params) //在这里插入后端浏览列表
+        .then(data => {
+          if (data.status === "Success") {
+            console.log(data.cars);
+            this.cars = data.cars;
+          } else if (data.status === "Empty") {
+            console.log(data.message);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   }
 };
