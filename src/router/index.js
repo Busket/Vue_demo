@@ -34,7 +34,17 @@ import Student from "../views/student.vue";
 import CoachIndex from "../views/coach/index";
 import coachStudentDetail from "../views/coach/detail";
 import apIndex from "@/views/coach/apIndex";
-import apDetail from "@/views/coach/apDetail"
+import coachCarList from "@/views/coach/carIndex";
+import coachCarDetail from "@/views/coach/carDetail";
+
+// import apDetail from "@/views/coach/apDetail"
+//行政
+import adminStudentAdd from "@/views/administration/add"
+import adminStudentDetail from "@/views/administration/detail"
+import adminIndex from "@/views/administration/index"
+import coachList from "@/views/administration/coachList"
+import Information from "@/views/administration/Information"
+
 Vue.use(VueRouter);
 
 // 路由白名单
@@ -461,6 +471,113 @@ const routes = [
         iconCls: "el-icon-setting",
         menuShow: true
       },
+      {
+        path: "/administration/coachCarList",
+        name: "车辆列表",
+        components: {
+          default: coachCarList,
+          top: TopNav,
+          aside: LeftNav
+        },
+        leaf: true, // 只有一个节点
+        iconCls: "el-icon-menu", // 图标样式class
+        menuShow: true //左侧栏是否显示
+      },
+      {
+        path: "/administration/coachCarDetail",
+        name: "车辆详细信息",
+        components: {
+          default: coachCarDetail,
+          top: TopNav,
+          aside: LeftNav
+        },
+        leaf: true, // 只有一个节点
+        iconCls: "el-icon-menu", // 图标样式class
+        menuShow: false //左侧栏是否显示
+      },
+      // {
+      //   path: "/coach/apDetail",
+      //   name: "学生详情",
+      //   components: {
+      //     default: apDetail,
+      //     top: TopNav,
+      //     aside: LeftNav
+      //   },
+      //   leaf: true,
+      //   iconCls: "el-icon-setting",
+      //   menuShow: false
+      // }
+    ]
+  },
+  {
+    path: "/administration",
+    type: "Administration",
+    name: "Administration",
+    component: Home,
+    redirect: "/administration/index",
+    menuShow: true,
+    children: [
+      {
+        path: "/administration/index",
+        name: "学生管理",
+        components: {
+          default: adminIndex,
+          top: TopNav,
+          aside: LeftNav
+        },
+        leaf: true, // 只有一个节点
+        iconCls: "iconfont icon-home", // 图标样式class
+        menuShow: true //左侧栏是否显示
+      },
+      {
+        path: "/administration/detail",
+        name: "学生详情",
+        components: {
+          default: adminStudentDetail,
+          top: TopNav,
+          aside: LeftNav
+        },
+        leaf: true,
+        iconCls: "el-icon-setting",
+        menuShow: false
+      },
+      {
+        path: "/administration/add",
+        name: "学生添加",
+        components: {
+          default: adminStudentAdd,
+          top: TopNav,
+          aside: LeftNav
+        },
+        leaf: true,
+        iconCls: "el-icon-setting",
+        menuShow: false
+      },
+      {
+        path: "/administration/coachList",
+        name: "教练管理",
+        components: {
+          default: coachList,
+          top: TopNav,
+          aside: LeftNav
+        },
+        leaf: true, // 只有一个节点
+        iconCls: "el-icon-menu", // 图标样式class
+        menuShow: true //左侧栏是否显示
+      },
+      {
+        path: "/administration/Information",
+        name: "信息发送",
+        components: {
+          default: Information,
+          top: TopNav,
+          aside: LeftNav
+        },
+        leaf: true, // 只有一个节点
+        iconCls: "el-icon-menu", // 图标样式class
+        menuShow: false //左侧栏是否显示
+      },
+
       // {
       //   path: "/coach/apDetail",
       //   name: "学生详情",

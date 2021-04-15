@@ -181,9 +181,8 @@
 
               <el-col :span="2" :offset="3">
                 <a href="https://gab.122.gov.cn/m/login" target="_blank">
-                <el-button type="primary"
-                >考试预约</el-button
-                ></a>
+                  <el-button type="primary">考试预约</el-button></a
+                >
               </el-col>
             </el-row>
           </el-row>
@@ -401,6 +400,7 @@ export default {
     },
     getCoach() {
       let params = { Number: this.studentData.coach };
+      console.log(this.studentData.coach);
       apis.deptApi
         .studentGetCoach(params) //在这里插入后端浏览列表
         .then(data => {

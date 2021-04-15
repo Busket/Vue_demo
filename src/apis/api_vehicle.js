@@ -22,4 +22,7 @@ export default {
   studentGetCars: params => {
     return API.GET("/api/studentGetCars", params);
   },
+  coachFindCarList: params => {
+    return API.GET("/api/coachFindCarList", params);
+  },
 };

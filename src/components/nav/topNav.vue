@@ -9,7 +9,7 @@
       </div>
       <div class="topbar-logos">
         <a href="/" style="color: #fff;"
-          ><span v-show="!$store.state.collapsed">车车综合管理</span></a
+          ><span v-show="!$store.state.collapsed">畅途驾校</span></a
         >
       </div>
       <div class="topbar-title">
@@ -28,9 +28,13 @@
               <el-menu-item index="/student" v-show="student"
                 >学生</el-menu-item
               >
-              <el-menu-item index="/coach" v-show="coach"
-              >教练</el-menu-item
+              <!--              行政的-->
+              <el-menu-item
+                index="/administration"
+                v-show="administrationVisible"
+                >日常管理</el-menu-item
               >
+              <el-menu-item index="/coach" v-show="coach">教练</el-menu-item>
               <el-menu-item index="/userManager" v-show="userManagerVisible"
                 >用户管理</el-menu-item
               >
@@ -47,6 +51,7 @@
                 v-show="studentManagerVisible"
                 >学生管理</el-menu-item
               >
+
               <!-- 这里是 首页 顶端栏的显示的按钮，可以在这里进行修改 -->
             </el-menu>
           </el-col>
@@ -97,7 +102,8 @@ export default {
       deptManagerVisible: false,
       studentManagerVisible: false,
       student: false,
-      coach:false
+      coach: false,
+      administrationVisible: false
     };
   },
   created() {
@@ -119,13 +125,15 @@ export default {
       "103"
     ) {
       //教练标签
-      this.coach=true;
+      this.coach = true;
     } else if (
       JSON.parse(window.sessionStorage.getItem("userInfo")).userJurisdiction ===
       "104"
     ) {
+      //行政
       this.vehicleManagerVisible = true;
       this.deptManagerVisible = true;
+      this.administrationVisible = true;
     } else if (
       JSON.parse(window.sessionStorage.getItem("userInfo")).userJurisdiction ===
       "102"
